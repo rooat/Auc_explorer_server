@@ -133,7 +133,7 @@ exports.compileContract = async function(req, res){
         for(var key in versionList){  
             let versionss = versionList[key];
             if(versionss.indexOf(version)!=-1){
-              wantVersion = versions;
+              wantVersion = versionss;
             }
         }
         if(!wantVersion){
