@@ -1,6 +1,6 @@
 var config = require('../config')
 
-exports.getBlock = async function(req,res){
+exports.getBlockByNumber = async function(req,res){
     let number = req.body.number;
     if(number >= 0){
         let block =  await config.db.Block.findOne({"number":number});
@@ -12,8 +12,22 @@ exports.getBlock = async function(req,res){
     return res.send({"resp":"param invalid"})
 }
 
+exports.getBlockList = async function(req,res){
+    try {
+        let page = req.body.page;
+        let ps = config.util.returnPs(page,10);
+        let count = await config.db.Block.find().count();
+        let blockList = await config.db.Block.find().sort({"number":-1}).skip(ps).limit(10);
+        return res.send({"resp":{"blockList":blockList,"count":count}});
+    } catch (error) {
+        console.log("getBlockList:",error);
+    }
+    return res.send({"resp":null})
+}
+
 exports.getBlockTxTps = async function(req,res){
     let currentBlock = await config.utilWeb3.web3Methods();
+
     let blockData = await config.db.Block.find().sort({"number":-1}).limit(50);
     if(blockData){
         let result = {};

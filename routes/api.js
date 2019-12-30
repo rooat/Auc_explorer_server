@@ -19,8 +19,9 @@ router.use(function (req, res, next) {
 
 //miner
 
+router.post('/block/getBlockList',block.getBlockList);
 router.post('/block/getBlockTxTps',block.getBlockTxTps);
-router.post('/block/getBlock',block.getBlock);
+router.post('/block/getBlockByNumber',block.getBlockByNumber);
 
 router.post('/witness/getIds',witness.getIds);
 router.post('/witness/totalMasterNodes',witness.totalMasterNodes);
