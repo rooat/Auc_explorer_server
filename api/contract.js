@@ -132,11 +132,12 @@ exports.compileContract = async function(req, res){
         let wantVersion ; 
         for(var key in versionList){  
             let versionss = versionList[key];
-            if(versionss.indexOf(version)==-1){
-              return res.send({"resp":"version invalid"})
-            }else{
+            if(versionss.indexOf(version)!=-1){
               wantVersion = versions;
             }
+        }
+        if(!wantVersion){
+          return res.send({"resp":"version invalid"})
         }
         console.log("wanteVersion:",wantVersion);
         let vers = require('../solcbin/'+wantVersion);
