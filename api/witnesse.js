@@ -1,10 +1,5 @@
 var config = require("../config")
 
-exports.totalMasterNodes = async function(req,res){
-    let count = await config.db.Witness.find().count();
-    return res.send({"resp":count})
-}
-
 exports.getIds = async function(req,res){
     let address = req.body.address;
     let page = req.body.page;

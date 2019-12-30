@@ -24,7 +24,6 @@ router.post('/block/getBlockTxTps',block.getBlockTxTps);
 router.post('/block/getBlockByNumber',block.getBlockByNumber);
 
 router.post('/witness/getIds',witness.getIds);
-router.post('/witness/totalMasterNodes',witness.totalMasterNodes);
 router.post('/witness/getInfo',witness.getInfo);
 router.post('/witness/nodes',witness.nodes);
 router.post('/witness/todayRewards',witness.todayRewards);
