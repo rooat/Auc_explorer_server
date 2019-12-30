@@ -25,7 +25,10 @@ exports.getIds = async function(req,res){
 exports.nodes = async function(req,res){
     try {
         let ids = req.body.id;
-        if(ids &&  ids.indexOf("0x")!=-1){
+        if(ids ){
+            if(ids.indexOf("0x")==-1){
+                ids = "0x"+ids;
+            }
             let result = await config.master.methods.nodes(ids).call();
             if(result){
                 let reus ={};
@@ -117,8 +120,10 @@ exports.todayRewards = async function(req,res){
 exports.weekRewardsById = async function(req,res){
     try {
         let id = req.body.id;
-        if(id && id.indexOf("0x")!=-1){
-            id = id.substr(2);
+        if(id){
+            if(id.indexOf("0x")!=-1){
+                id = id.substr(2);
+            }
             let nowDate = parseInt(new Date().getTime()/1000);
             let aWeek = 86400*7;
             let blockCount =await config.db.Block.find({"witness":id,"timestamp":{$gte:(nowDate-aWeek)}}).count();
