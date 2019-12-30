@@ -49,7 +49,7 @@ router.post('/contract/tokenTransferByContract',contract.tokenTransferByContract
 router.post('/contract/tokenTransferByHash',contract.tokenTransferByHash);
 router.post('/contract/tokenTransferByAddress',contract.tokenTransferByAddress);
 router.post('/contract/tokenList',contract.tokenList);
-router.post('/contract/txListContract',contract.txListContract);
+// router.post('/contract/txListContract',contract.txListContract);
 router.post('/contract/compileContract',contract.compileContract);
 
 router.post('/inner/innerTxOneByHash',inner.innerTxOneByHash);

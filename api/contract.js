@@ -105,17 +105,17 @@ exports.tokenList = async function(req,res){
     return res.send({"resp":null})
 }
 
-exports.txListContract = async function(req, res){
-    let contractAdd = req.body.address;
-    let page = req.body.page;
-    let ps = config.util.returnPs(page,10);
-    if(config.util.invalidAddr(contractAdd)){
-        let tx = await config.db.Transaction.find({"to":config.util.noLowUper(contractAdd)}).sort({"blockNumber":-1}).skip(ps).limit(10);
-        let count = await config.db.Transaction.find({"to":config.util.noLowUper(contractAdd)}).count();
-        return res.send({"resp":{"txList":tx,"count":count}});
-    }
-    return res.send({"resp":"param invalid"})
-}
+// exports.txListContract = async function(req, res){
+//     let contractAdd = req.body.address;
+//     let page = req.body.page;
+//     let ps = config.util.returnPs(page,10);
+//     if(config.util.invalidAddr(contractAdd)){
+//         let tx = await config.db.Transaction.find({"to":config.util.noLowUper(contractAdd)}).sort({"blockNumber":-1}).skip(ps).limit(10);
+//         let count = await config.db.Transaction.find({"to":config.util.noLowUper(contractAdd)}).count();
+//         return res.send({"resp":{"txList":tx,"count":count}});
+//     }
+//     return res.send({"resp":"param invalid"})
+// }
 
 exports.compileContract = async function(req, res){
     let address = req.body.address;
