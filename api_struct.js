@@ -140,6 +140,11 @@ async function tokenList(){
 } 
 tokenList();
 
+async function contractList(){
+    let data = await axios.post(url+'/api/contract/contractList',{"page":1});
+    console.log("data:",data.data.resp)
+}
+contractList();
 async function txListContract(){
     let data = await axios.post(url+'/api/contract/txListContract',{"address":"0x969a143Fc1d87dBFb4b7F40c9F72f9BDf6029Ded","page":1});
     console.log("data:",data.data.resp)

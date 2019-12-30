@@ -85,7 +85,7 @@ exports.tokenTransferByContract = async function(req,res){
     return res.send({"resp":"params invalid"});
 }
 
-exports.tokenList = async function(req,res){
+exports.contractList = async function(req,res){
     try {
         let page = req.body.page;
         if(page || page<=0){
@@ -95,14 +95,33 @@ exports.tokenList = async function(req,res){
         let tokenCount = await config.db.Address.find({"type":1}).count();
         let tokenres = await config.db.Address.find({"type":1}).skip(ps).limit(10);
         let result = {
-            "tokenCount":tokenCount,
-            "tokenList":tokenres
+            "contractCount":tokenCount,
+            "contractList":tokenres
         }
         return res.send({"resp":result});
     } catch (error) {
         console.log("tokenList: eroor: ",error)
     }
     return res.send({"resp":null})
+}
+
+exports.tokenList = async function(req,res){
+  try {
+      let page = req.body.page;
+      let ps = config.util.returnPs(page,10);
+      let tokenCount = await config.db.Contract.find({"totalSupply":{$gt:0}}).count();
+      let tokenres = await config.db.Contract.find({"totalSupply":{$gt:0}}).skip(ps).limit(10);
+      // console.log("tken:",tokenCount)
+      // console.log("to:",tokenres)
+      let result = {
+          "tokenCount":tokenCount,
+          "tokenList":tokenres
+      }
+      return res.send({"resp":result});
+  } catch (error) {
+      console.log("tokenList: eroor: ",error)
+  }
+  return res.send({"resp":null})
 }
 
 // exports.txListContract = async function(req, res){
@@ -180,7 +199,7 @@ exports.compileContract = async function(req, res){
             console.log("true")
             await config.db.Contract.update(
               {address: address},
-              {$set:{'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input,"byteCode":compileByteCode,"abi":abi}},
+              {$set:{'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input,"abi":abi}},
               {multi: false, upsert: false});
             let contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
             return res.send({"resp":{"status":true,"contract":contract}})
