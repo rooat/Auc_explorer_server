@@ -124,6 +124,7 @@ exports.weekRewardsById = async function(req,res){
             if(id.indexOf("0x")!=-1){
                 id = id.substr(2);
             }
+            
             let nowDate = parseInt(new Date().getTime()/1000);
             let aWeek = 86400*7;
             let blockCount =await config.db.Block.find({"witness":id,"timestamp":{$gte:(nowDate-aWeek)}}).count();
