@@ -114,6 +114,25 @@ exports.todayRewards = async function(req,res){
     return res.send({"resp":null})
 }
 
+exports.weekRewardsById = async function(req,res){
+    try {
+        let id = req.body.id;
+        if(id && id.indexOf("0x")!=-1){
+            id = id.substr(2);
+            let nowDate = parseInt(new Date().getTime()/1000);
+            let aWeek = 86400*7;
+            let blockCount =await config.db.Block.find({"witness":id,"timestamp":{$gte:(nowDate-aWeek)}}).count();
+            reward = blockCount * 4.8;
+            return res.send({"resp":reward});
+        }
+       return res.send({"resp":"param invalid"}) 
+    } catch (error) {
+       console.log("weekRewardsById:",error) 
+    }
+    return res.send({"resp":null})
+}
+
+
 exports.witnessList=async function(req, res){  
     let page = req.body.page;
     let ps = config.util.returnPs(page,10);

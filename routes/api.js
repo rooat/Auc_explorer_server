@@ -29,6 +29,7 @@ router.post('/witness/getInfo',witness.getInfo);
 router.post('/witness/nodes',witness.nodes);
 router.post('/witness/todayRewards',witness.todayRewards);
 router.post('/witness/witnessList',witness.witnessList);
+router.post('/witness/weekRewardsById',witness.weekRewardsById)
 
 router.post('/transaction/txlistByAddress',transaction.txlistByAddress);
 router.post('/transaction/txList',transaction.txList);

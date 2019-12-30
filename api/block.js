@@ -25,6 +25,23 @@ exports.getBlockList = async function(req,res){
     return res.send({"resp":null})
 }
 
+exports.getBlockListById = async function(req,res){
+    try {
+        let id = req.body.id;
+        let page = req.body.page;
+        let ps = config.util.returnPs(page,10);
+        if(id && id.indexOf("0x")!=-1){
+            let count = await config.db.Block.find({"witness":id}).count();
+            let blocks = await config.db.Block.find({"witness":id}).sort({"number":-1}).skip(ps).limit(10);
+            return res.send({"resp":{"count":count,"list":blocks}})
+        }
+        return res.send({"resp":"param invalid"});
+    } catch (error) {
+        console.log("getBlockListById:",error);
+    }
+    return res.send({"resp":null})
+}
+
 exports.getBlockTxTps = async function(req,res){
     let currentBlock = await config.utilWeb3.web3Methods();
 

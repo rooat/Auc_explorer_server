@@ -7,7 +7,8 @@ exports.tokenInfo = async function(req,res){
     let contractAdd = req.body.address;
     if(config.util.invalidAddr(contractAdd)){
        let dbToken =  await config.db.Contract.findOne({"address":config.util.noLowUper(contractAdd)});
-       let tokenData = {
+       if(dbToken){
+          let tokenData = {
             "balance": dbToken.balance,
             "totalSupply": dbToken.totalSupply/10**dbToken.decimals,//dbToken.totalSupply.toEther(actualBalance, 'wei');
             "tokenHolders": 2,//tt fix, wait to dev
@@ -20,8 +21,10 @@ exports.tokenInfo = async function(req,res){
             "decimals": dbToken.decimals,
             "isVerified":dbToken.sourceCode!=null,
             "address":contractAdd
-         };
-         return res.send({"resp":tokenData});
+          };
+        return res.send({"resp":tokenData});
+       }
+       return res.send({"resp":null})
     }
     return res.send({"resp":"params invalid"})
 }
