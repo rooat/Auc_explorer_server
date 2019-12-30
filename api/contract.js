@@ -1,6 +1,6 @@
 
 var config = require('../config')
-var versions = require('./solcversion.json');
+var versions = require('../solcversion.json');
 var wrapper = require('solc/wrapper.js')
 
 exports.tokenInfo = async function(req,res){
