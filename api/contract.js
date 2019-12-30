@@ -123,9 +123,10 @@ exports.compileContract = async function(req, res){
     let name = req.body.name;
     let input = req.body.code;
     let optimization = (req.body.optimization ==1) ? true:false;
+    let abi = req.body.abi;
   
     try {
-      if(config.util.invalidAddr(address) && version && name && input && optimization ){
+      if(config.util.invalidAddr(address) && version && name && input && optimization && abi ){
         let versionList = versions.releases;
         let wantVersion ; 
         for(var key in versionList){  
@@ -179,7 +180,7 @@ exports.compileContract = async function(req, res){
             console.log("true")
             await config.db.Contract.update(
               {address: address},
-              {$set:{'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input}},
+              {$set:{'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input,"byteCode":compileByteCode,"abi":abi}},
               {multi: false, upsert: false});
             let contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
             return res.send({"resp":{"status":true,"contract":contract}})
