@@ -41,6 +41,12 @@ var url = "http://47.56.226.139"
 // } 
 // todayRewards();
 
+// async function weekRewardsById(){
+//     let data = await axios.post(url+'/api/witness/weekRewardsById',{"id":"0xb0865cc43a42e246"});
+//     console.log("data:",data.data.resp)
+// } 
+// weekRewardsById()
+
 // async function witnessList(){
 //     let data = await axios.post(url+'/api/witness/witnessList',{"page":1});
 //     console.log("data:",data.data.resp)
