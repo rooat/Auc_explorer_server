@@ -120,12 +120,7 @@ exports.compileContract = async function(req, res){
     let name = req.body.name;
     let input = req.body.code;
     let optimization = (req.body.optimization ==1) ? true:false;
-    
-  console.log("address:",address)
-  console.log("version:",version)
-  console.log("name:",name)
-  console.log("input:",input)
-  console.log("optimization:",optimization)
+  
     try {
       if(config.util.invalidAddr(address) && version && name && input && optimization ){
         let versionList = versions.releases;

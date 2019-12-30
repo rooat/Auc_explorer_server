@@ -1,4 +1,4 @@
-var versions = require('../solcversion.json')
+var versions = require('./solcversion.json')
 const execSync = require('child_process').execSync;
 
 function test(){
