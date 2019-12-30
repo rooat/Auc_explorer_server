@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta name="renderer" content="webkit">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+
+		<title>AUCHAIN</title>
+
+		<!--  icon start   -->
+
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+		<!--  icon end  -->
+
+		<!-- Custom styles for our template -->
+
+		<link rel="stylesheet " href=" css/style.css ">
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+	    <script src=" js/html5shiv.js "></script>
+	    <script src=" js/respond.min.js "></script>
+	    <![endif]-->
+	    <style>
+	    	html{font-size: 100px}
+	    </style>
+
+
+	</head>
+
+	<body>
+		<div class="app_bg">
+			
+		</div>
+		<div class="app_logo">
+			<img src="images/app_logo.png" />
+		</div>
+		<div class="name_logo">
+			<img src="" />
+			<span class="version">official version</span>
+		</div>
+		<p class="version_info">
+			<span class="version_con">Version:<span id="version_num"></span></span>
+			<span class="size_con">Size:<span id="size"></span> MB   </span>
+			<span class="date_con">Updated:<span id="date"></span></p></span>
+		<div class="code">
+			<div id="qrcode" style="width:100px; height:100px; margin:15px auto 0;"></div>
+			<img id="qrCodeIco" src="images/app_logo.png" width="20" height="20"  style="display: none;"/>
+			<div style="height: 1.6rem;width: 1.6rem; margin: 0 auto;"><img id="image"  src="" alt="code"/></div>
+			<div class="install_btn">
+				<a id="install" href=""><p class="install">Install App</p></a>
+				<a id="testflight" href="https://testflight.apple.com/join/tObWQU4t"><p class="install_test">TestFlight</p></a>
+			</div>
+			<p class="install_info">Or use your mobile to scan the QR code to install</p>
+		</div>
+		<p class="line"></p>
+		<div class="update_info">
+			<h4>Changelog</h4>
+			<ul>
+
+			</ul>
+		</div>
+		<div class="app_bottom">
+			<div class="bottom_left">
+					<a><span class="disclaimer">Term of service</span></a>
+					<span style="margin: 0 5px;">|</span>
+					<a><span class="inform">Report</span></a>		
+			</div>
+			<div class="bottom_right">
+					<a class="china"><img src="images/china.png" /><span class="cn">中文</span></a>
+					<a class="english"><img src="images/usa.png" /><span class="en">English</span></a>		
+			</div>
+		</div>
+
+	
+
+<!--<div class="app_bottom">
+	<p>Copyright 2018 EtherZero. All Rights Reserved</p>
+</div>-->
+		
+		<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="js/jquery.min.js "></script>
+		<script type="text/javascript" src="js/layout.js"></script>
+		<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
+	    
+		<script type="text/javascript">			
+           window.onload = window.onresize = function() {
+           var w = window.innerWidth;
+	       w = (w > 640) ? 640 : w;
+	       w = (w < 320) ? 320 : w;
+	       document.documentElement.style.fontSize = (w / 640) * 100 + "px";
+	                   
+	       }
+           
+	/* code-star */		
+            //计算宽，高，中心坐标，logo大小                                                                       
+           var width = 150;                                                                      
+           var height = 150;                                                                     
+           var x = width * 0.35;                                                                  
+           var y = height * 0.35;                                                                 
+           var lx = width * 0.3;                                                                 
+           var ly = height * 0.3;   
+           var address = window.location.href;
+           
+           $('#qrcode').qrcode({
+              render : "canvas",
+              width: width,                                                                     
+              height: height,
+              text: address
+          })
+          .hide();   
+           var canvas = $("#qrcode canvas")[0];
+           //添加logo
+    canvas.getContext('2d').drawImage($("#qrCodeIco")[0], x, y, lx, ly);
+    //将canvas生成的二维码内容添加到img里，使得移动端能长按识别二维码
+    $('#image').attr('src', canvas.toDataURL('image/png')); 
+    /* code-end */
+   
+   
+  			function GetQueryString(name)
+			{
+    			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  			    var r = window.location.search.substr(1).match(reg);
+   			    if(r!=null)return  unescape(r[2]); return null;
+			}
+			var phonetype = GetQueryString('Type');
+			
+           var settings = {
+             "async": true,
+             "crossDomain": true,
+             "url": "https://easyetz.io/airdropapi//api/v1/showappinfo",
+             "method": "POST",
+             "headers": {
+               "Content-Type": "application/x-www-form-urlencoded"
+             },
+             "data": {
+               "platform": phonetype,
+               "version": "Final"
+             }
+           }
+           
+           if(phonetype=="IOS"){
+				$('.name_logo img').attr("src","images/apple_logo.png");
+				$('#install').hide();
+				$('#testflight').show();
+			}
+			else if(phonetype=="ANDROID"){
+				$('.name_logo img').attr("src","images/Android_logo.png");
+				$('#install').show()
+				$('#testflight').hide();
+			}
+           $('.china').attr('href','download_cn.html?id=1&Type='+phonetype);
+           $('.english').attr('href','download.html?id=1&Type='+phonetype);
+           
+           $.ajax(settings).done(function (response) {
+//           $(".version").text(response.fields.versiontype);
+             $("#install").attr("href",response.fields.url);
+             $("#version_num").text(response.fields.version);
+             $("#size").text(response.fields.size);
+             $("#date").text(response.fields.update_time.substr(0,11));
+             if(response.fields.content != "" && response.fields.content != null){
+             	var updatecon = response.fields.content.split('\\n');
+             	if(updatecon != null || updatecon != ""){
+             		for (var i=0;i<updatecon.length;i++) {
+            	 		$(".update_info ul").append("<li>"+$.trim(updatecon[i])+"</li>");
+           			}
+            		console.log(response.fields.platform);
+             	}
+             }
+
+             
+           });
+//         function GetQueryString(name)
+//			{
+//  			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+//			    var r = window.location.search.substr(1).match(reg);
+// 			    if(r!=null)return  unescape(r[2]); return null;
+//			}
+//			var phonetype = GetQueryString('Type');
+			
+           
+
+           
+		</script>
+
+	</body>
+
+</html>

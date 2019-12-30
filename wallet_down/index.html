@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta name="renderer" content="webkit">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+
+		<title>AUCHAIN</title>
+
+		<!--  icon start   -->
+
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+		<!--  icon end  -->
+
+		<!-- Custom styles for our template -->
+
+		<link rel="stylesheet " href=" css/style.css ">
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+	    <script src=" js/html5shiv.js "></script>
+	    <script src=" js/respond.min.js "></script>
+	    <![endif]-->
+	    <style>
+	    	@font-face {
+	    		font-family: tecnico_regular;
+	    		src: url('font/tecnico_regular.ttf');
+	    	} 
+	    	html{
+	    		font-size: 100px;
+	    	}
+	    	body{
+	    		font-family: "tecnico_regular";
+	    	}
+	    	.realtime_rightbox, .add_leftbox{
+	    		width: 95%;
+	    	}
+	    	@media screen and (max-width: 1500px){
+	    		.auchain {
+	    			font-size: 32px;
+	    		}
+	    		.adtitle{
+	    			font-size: 16px;
+	    		}
+	    		
+	    	}
+	    	@media screen and (max-width: 1100px){
+	    		.realtime_right ul li,.add_left ul li{
+	    			font-size: 18px;
+	    		}
+	    		.realtime_right h4 {
+	    			font-size: 30px;
+	    			margin: 0.3rem auto 0.2rem;
+	    		}
+	    		.add_left h4{
+	    			font-size: 30px;
+	    		}
+	    	}
+	    	@media screen and (max-width: 1000px){
+	    		.appdown li div {
+	    			margin: 0.7rem 0.05rem 0 0;
+	    			padding: 0.15rem 0.02rem;
+	    		}
+	    	}
+	    	@media screen and (max-width: 768px){
+	    		.auchain {
+	    			font-size: 18px;
+	    		}
+	    		.adtitle{
+	    			font-size: 14px;
+	    		}
+	    		.appdown li span{
+	    			font-size: 14px;
+	    		}
+	    		.appdown li img{
+	    			margin: 0.15rem 0;
+	    		}
+	    		.appdown li div{
+	    			width: 2.5rem;    
+	    			margin: 0.4rem auto;
+	    			padding: 0.1rem 0.02rem;
+	    		}
+	    		.add_left ul,.realtime_right ul{
+	    			width: 85%;
+	    			margin: 0 auto;
+	    		}
+	    		.add_left ul li,.realtime_right ul li{
+	    			text-align: left;
+	    		}
+	    	}
+	    	@media screen and (max-width: 321px){
+	    		.appdown li span{
+	    			font-size: 12px;
+	    		}
+	    	}
+	    </style>
+
+
+	</head>
+
+	<body>
+		<header>
+			<div class="logo">
+				<div class="header-fix">
+				    <img src="images/logo.png" style="float: left;" />
+				</div>
+				<div class="dropdown " style="right: 12px;">
+				    <a href="# " class="dropdown-toggle" id="language" onclick="" >Language</a>
+				    <ul class="dropdown-menu " style="display: none;">
+				    	<li><a onclick="zh()">中文</a></li>
+					    <li class="active"><a onclick="en()">English</a></li>
+			    	</ul>
+			    </div>
+			    
+			    <div class="menu navbar-collapse collapse header-nav">
+					<ul class="nav navbar-nav pull-right ">
+						<a href="#" target="_blank"><li>Tutorial</li></a>
+					</ul>
+				</div>
+			</div>
+			<div class="banner">
+				<div class="banner_left">
+					<div class="left_box">
+					    <h4 class="auchain">The Next Generation Of Smart Digital Wallets</h4>
+					    <div class="adcon">
+					        <p class="adtitle">0 Fees</p>
+					        <p class="adtitle">Instant Payment</p>
+					        <p class="adtitle">Simple and Safe</p>
+					    </div>
+					    <ul class="appdown">
+					        <a href="#" target="_blank"><li><div><img src="images/iphone.png" /><span>iPhone Download</span></div></li></a>
+					        <a href="#" target="_blank"><li><div class="ar_down"><img src="images/andriod.png" /><span>Android Download</span></div></li></a>
+					    </ul>
+					</div>
+				</div>
+				
+				<div class="banner_right">
+					<P>
+					<!--<img src="images/iphonex01.png" />-->
+					</P>
+				</div>
+
+			</div>
+		</header>
+		<div class="content">
+		
+		   
+		    <div class="realtime">
+		    	<div class="realtime_left">
+		    		<div class="realtime_leftbox">
+		    		<img src="images/iphone02.png" />
+		    		</div>
+		    	</div>
+		    	<div  class="realtime_right">
+		    		<div class="realtime_rightbox">
+		    		<h4>Real-Time Assets</h4>
+		    		<ul>
+		    			<li>Zero Transaction Fee</li>
+		    			<li>Instant Payment</li>
+		    			<li>Multi-asset Management Support</li>
+		    		</ul>
+		    		</div>
+		    	</div>
+		    </div>
+		    
+		    <div class="add">
+		    	<div  class="add_left">
+		    		<div class="add_leftbox">
+		    		<h4>Safe And Reliable</h4>
+		    		<ul>
+		    			<li>Protected With Multiple Passwords</li>
+		    			<li>Always Pay Attention To Capital Dynamics</li>
+		    			<li>Ensure Account Funds Security</li>
+		    		</ul>
+		    	    </div>
+		    	</div>
+		    	<div class="add_right">
+		    		<div class="add_rightbox">
+		    		<img src="images/iphone03.png" />
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="about">
+		    	<h4>About us</h4>
+				<p>AUCHAIN (AUC) is a new-generation smart contract platform (public chain) initiated by professional and technical geeks. Team members are from different countries, and foundation entities are registered in Singapore. We focus on the development of smart contract development platforms and digital asset management.</p>
+			</div>
+		    <div class="contact">
+		    	<h4>Contact us</h4>
+		    	<ul>
+		    		<a href="#" target="_blank"><li><img src="images/m.png" /></li></a>
+		    		<a href="#" target="_blank"><li><img src="images/g.png" /></li></a>
+		    		<a href="#" target="_blank"><li><img src="images/t.png" /></li></a>
+		    		<a href="#" target="_blank"><li><img src="images/f.png" /></li></a>
+		    		<a href="#" target="_blank"><li><img src="images/w.png" /></li></a>
+		    	</ul>
+		    </div>
+		</div>
+	
+
+<div class="bottom">
+	<p>Copyright 2018 AUCHAIN. All Rights Reserved</p>
+</div>
+		
+		<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="js/jquery.min.js "></script>
+		<script type="text/javascript" src="js/layout.js"></script>
+	    
+		<script type="text/javascript">			
+           window.onload = window.onresize = function() {
+           var w = window.innerWidth;
+	       w = (w > 640) ? 640 : w;
+	       w = (w < 320) ? 320 : w;
+	       document.documentElement.style.fontSize = (w / 640) * 100 + "px";
+	                   
+	       }
+           
+           
+           
+		</script>
+
+	</body>
+
+</html>

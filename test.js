@@ -73,11 +73,30 @@ var writeBlockToDB =async function(blockData) {
     }
     let block = await configs.db.Block.findOne({"hash":blockData.hash})
     if(!block){
+      console.log("bldd--",blockData)
         await axios.post('http://localhost:8000/api/block',{
-          "number":blockData.number.toString(),
-          "miner":blockData.miner.toString(),
-          "timestamp":blockData.timestamp.toString(),
+          "number" : "abdd"   ,
+          "hash" : "abdd"  ,
+          "parentHash" : "abdd"   ,
+          "nonce" : "abdd"   ,
+          "sha3Uncles": "abdd"   ,
+          "logsBloom": "abdd"   ,
+          "transactionsRoot": "abdd"   ,
+          "stateRoot": "abdd"   ,
+          "receiptRoot": "abdd"   ,
+          "miner": "abdd"   ,
+          "difficulty": "abdd"   ,
+          "totalDifficulty": "abdd"   ,
+          "size": "abdd"   ,
+          "extraData": "abdd"   ,
+          "gasLimit": "abdd"   ,
+          "gasUsed": "abdd"   ,
+          "timestamp": "abdd"   ,
+          "uncles" : "ddd",
+          "txs" : "ddd",
+          "witness" : "abdd"   ,
         })
+          
         // await configs.db.Block(blockData).save();
         // let version;
         // let extraData = hex2ascii(blockData.extraData);

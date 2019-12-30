@@ -130,8 +130,13 @@ async function tokenTransferByHash(){
     console.log("data:",data.data.resp)
 } 
 tokenTransferByHash();
+
 async function tokenTransferByAddress(){
-    let data = await axios.post(url+'/api/contract/tokenTransferByAddress',{"address":"0xCEc96353C0cf76F7a784574e32fA8aD3Ad1345Dc","page":1});
+    let data = await axios.post(url+'/api/contract/tokenTransferByAddress',{
+        "address":"0xCEc96353C0cf76F7a784574e32fA8aD3Ad1345Dc",
+        "startNum":22,
+        "endNum":323,
+        "page":1});
     console.log("data:",data.data.resp)
 } 
 tokenTransferByAddress();

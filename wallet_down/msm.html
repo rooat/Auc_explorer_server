@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MSM测试版本下载</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="msm-context" onclick="download()">点我下载MSM</div>
+</body>
+<script>
+    function download(){
+        window.location.href = "itms-services://?action=download-manifest&url=https://easyetz.io/msm.plist";
+        return;
+    }
+</script>
+</html>
