@@ -59,11 +59,21 @@ exports.tokenTransferByHash = async function(req,res){
 exports.tokenTransferByAddress = async function(req,res){
   try {
     let address = req.body.address;
+    let startNum = req.body.startNum;
+    let endNum = req.body.endNum;
+    
     let page = req.body.page;
     let ps = config.util.returnPs(page,10);
     if(config.util.invalidAddr(address)){
-      let count = await config.db.TokenTransfer.find({$or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]}).count(); 
-      let tokenTrafer = await config.db.TokenTransfer.find({$or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]}).sort({"blockNumber":-1}).skip(ps).limit(10);
+      let findOpt = {$or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]};
+      if(startNum>=0 && endNum>0){
+        findOpt = {
+          $or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}],
+          "amount":{$gte:startNum,$lt:endNum}
+        }
+      }
+      let count = await config.db.TokenTransfer.find(findOpt).count(); 
+      let tokenTrafer = await config.db.TokenTransfer.find(findOpt).sort({"blockNumber":-1}).skip(ps).limit(10);
       return res.send({"resp":{"transList":tokenTrafer,"count":count}});
     }
     return res.send({"resp":"params invalid"})

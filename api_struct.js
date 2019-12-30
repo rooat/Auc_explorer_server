@@ -9,6 +9,7 @@ async function getBlockByNumber(){
     let data = await axios.post(url+'/api/block/getBlockByNumber',{"number":3});
     console.log("data:",data.data.resp)
 } 
+
 getBlockByNumber();
 async function getBlockList(){
     let data = await axios.post(url+'/api/block/getBlockList',{"page":1});
@@ -134,6 +135,8 @@ async function tokenTransferByAddress(){
     console.log("data:",data.data.resp)
 } 
 tokenTransferByAddress();
+
+
 async function tokenList(){
     let data = await axios.post(url+'/api/contract/tokenList',{"page":1});
     console.log("data:",data.data.resp)
@@ -145,6 +148,7 @@ async function contractList(){
     console.log("data:",data.data.resp)
 }
 contractList();
+
 async function txListContract(){
     let data = await axios.post(url+'/api/contract/txListContract',{"address":"0x969a143Fc1d87dBFb4b7F40c9F72f9BDf6029Ded","page":1});
     console.log("data:",data.data.resp)
