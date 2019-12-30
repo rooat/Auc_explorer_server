@@ -1,0 +1,55 @@
+'use strict'
+var express = require('express');
+var router = express.Router();
+var address = require('../api/address')
+var block = require('../api/block');
+var witness = require("../api/witnesse")
+var transaction = require("../api/transaction");
+var version = require('../api/version')
+var contract = require('../api/contract')
+var log = require('../api/logevent')
+var inner = require('../api/inertransaction')
+
+
+router.use(function (req, res, next) {
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                next();
+        });
+
+//miner
+
+router.post('/block/getBlockTxTps',block.getBlockTxTps);
+router.post('/block/getBlock',block.getBlock);
+
+router.post('/witness/getIds',witness.getIds);
+router.post('/witness/totalMasterNodes',witness.totalMasterNodes);
+router.post('/witness/getInfo',witness.getInfo);
+router.post('/witness/nodes',witness.nodes);
+router.post('/witness/todayRewards',witness.todayRewards);
+router.post('/witness/witnessList',witness.witnessList);
+
+router.post('/transaction/txlistByAddress',transaction.txlistByAddress);
+router.post('/transaction/txList',transaction.txList);
+router.post('/transaction/txByHash',transaction.txByHash);
+
+router.post('/version/versionCheck',version.versionCheck);
+
+router.post('/log/findLogOneByHash',log.findLogOneByHash);
+
+router.post('/address/getBalance',address.getBalance);
+router.post('/address/getPower',address.getPower);
+router.post('/address/addressList',address.addressList);
+
+router.post('/contract/tokenInfo',contract.tokenInfo);
+router.post('/contract/tokenBalance',contract.tokenBalance)
+router.post('/contract/tokenTransferByContract',contract.tokenTransferByContract)
+router.post('/contract/tokenTransferByHash',contract.tokenTransferByHash);
+router.post('/contract/tokenTransferByAddress',contract.tokenTransferByAddress);
+router.post('/contract/tokenList',contract.tokenList);
+router.post('/contract/txListContract',contract.txListContract);
+router.post('/contract/compileContract',contract.compileContract);
+
+router.post('/inner/innerTxOneByHash',inner.innerTxOneByHash);
+router.post('/inner/innerTxListByAddress',inner.innerTxListByAddress);
+module.exports = router;

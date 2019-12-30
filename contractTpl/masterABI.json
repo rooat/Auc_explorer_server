@@ -1,0 +1,446 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes8",
+				"name": "id",
+				"type": "bytes8"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			}
+		],
+		"name": "join",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes8",
+				"name": "id",
+				"type": "bytes8"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			}
+		],
+		"name": "quit",
+		"type": "event"
+	},
+	{
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "fallback"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "baseCost",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "countExpiredNode",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "countOnlineNode",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "countTotalNode",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "expiredNodesOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "startPos",
+				"type": "uint256"
+			}
+		],
+		"name": "getIds",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "length",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes8[5]",
+				"name": "data",
+				"type": "bytes8[5]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			}
+		],
+		"name": "getInfo",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "lockedBalance",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "releasedReward",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalNodes",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "onlineNodes",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expiredNodes",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "myValidNodes",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "myExpiredNodes",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "bytes8",
+				"name": "id",
+				"type": "bytes8"
+			}
+		],
+		"name": "has",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "idsOf",
+		"outputs": [
+			{
+				"internalType": "bytes8",
+				"name": "",
+				"type": "bytes8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "lastId",
+		"outputs": [
+			{
+				"internalType": "bytes8",
+				"name": "",
+				"type": "bytes8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "lastOnlineId",
+		"outputs": [
+			{
+				"internalType": "bytes8",
+				"name": "",
+				"type": "bytes8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "minBlockTimeout",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "miningPeriod",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "nodeCost",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "bytes8",
+				"name": "",
+				"type": "bytes8"
+			}
+		],
+		"name": "nodes",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "id1",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "id2",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes8",
+				"name": "preId",
+				"type": "bytes8"
+			},
+			{
+				"internalType": "bytes8",
+				"name": "nextId",
+				"type": "bytes8"
+			},
+			{
+				"internalType": "bytes8",
+				"name": "preOnlineId",
+				"type": "bytes8"
+			},
+			{
+				"internalType": "bytes8",
+				"name": "nextOnlineId",
+				"type": "bytes8"
+			},
+			{
+				"internalType": "address payable",
+				"name": "coinbase",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "status",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "blockEnd",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "blockRegister",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "blockLastPing",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "blockOnline",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "blockOnlineAcc",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "id1",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "id2",
+				"type": "bytes32"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "bytes8",
+				"name": "id",
+				"type": "bytes8"
+			}
+		],
+		"name": "renew",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	}
+]
