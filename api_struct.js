@@ -5,11 +5,16 @@ var url = "http://47.56.226.139"
 //     console.log("data:",data.data.resp)
 // } 
 // getBlockTxTps();
-async function getBlockByNumber(){
-    let data = await axios.post(url+'/api/block/getBlockByNumber',{"number":3});
-    console.log("data:",data.data.resp)
-} 
-getBlockByNumber();
+// async function getBlockByNumber(){
+//     let data = await axios.post(url+'/api/block/getBlockByNumber',{"number":3});
+//     console.log("data:",data.data.resp)
+// } 
+// getBlockByNumber();
+// async function getBlockList(){
+//     let data = await axios.post(url+'/api/block/getBlockList',{"page":1});
+//     console.log("data:",data.data.resp)
+// } 
+// getBlockList();
 // async function getIds(){
 //     let data = await axios.post(url+'/api/witness/getIds',{"address":"0x046BC7B020dA804A2CF59c7097667cF8bB138389"});
 //     console.log("data:",data.data.resp)
