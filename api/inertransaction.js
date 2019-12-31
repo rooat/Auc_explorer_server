@@ -4,8 +4,9 @@ exports.innerTxOneByHash = async function(req,res){
     try {
         let hash = req.body.hash;
         if(config.util.invalidHash(hash)){
-            let tx = await config.db.InerTransaction.findOne({"hash":hash}); 
-            return res.send({"resp":tx});
+            let count = await config.db.InerTransaction.find({"hash":hash}).count();
+            let tx = await config.db.InerTransaction.find({"hash":hash}); 
+            return res.send({"resp":{"count":count,"txList":tx}});
         }
         return res.send({"resp":"param invalid"})
     } catch (error) {
