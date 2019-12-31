@@ -46,8 +46,9 @@ exports.tokenTransferByHash = async function(req,res){
   try {
     let hash = req.body.hash;
     if(config.util.invalidHash(hash)){
-      let tokenTransfer = await config.db.TokenTransfer.findOne({"transactionHash":hash});
-      return res.send({"resp":tokenTransfer})
+      let count = await config.db.TokenTransfer.find({"transactionHash":hash}).count();
+      let tokenTransfer = await config.db.TokenTransfer.find({"transactionHash":hash});
+      return res.send({"resp":{"count":count,"txlist":tokenTransfer}})
     }
     return res.send({"resp":"params invalid"});
   } catch (error) {

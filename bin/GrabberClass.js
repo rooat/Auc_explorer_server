@@ -150,7 +150,7 @@ var writeTransactionsToDB = async function(blockData) {
             }
             txData.timestamp = blockData.timestamp;
             txData.witness = blockData.witness;
-            txData.gasPrice = String(txData.gasPrice);//etherUnits.toEther(txData.gasPrice, 'ether');
+            txData.gasPrice = String(txData.gasPrice);
             txData.value = toFixedNum(txData.value) 
             txData.gasUsed = receiptData.gasUsed;
             txData.contractAddress = receiptData.contractAddress;
@@ -256,6 +256,10 @@ var writeTransactionsToDB = async function(blockData) {
                                     console.log(err);
                             }
                         );
+                    }
+                    let conts = await configs.db.Contract.findOne({"address": configs.util.noLowUper(receiptData.to)})
+                    if(conts){
+                        txData.contractAddress = receiptData.to;
                     }
                 }
             }

@@ -11,7 +11,7 @@ var Block = new Schema(
     "logsBloom": String,
     "transactionsRoot": String,
     "stateRoot": String,
-    "receiptRoot": String,
+    "receiptsRoot": String,
     "miner": String,
     "difficulty": String,
     "totalDifficulty": String,
