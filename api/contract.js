@@ -325,7 +325,7 @@ exports.compileContract = async function(req, res){
   var optimization = (req.body.optimization) ? true : false;
   let abi = req.body.abi;
 
-  var bytecode = eth.getCode(address);
+  var bytecode =await config.web3.eth.getCode(address);
   if (bytecode.substring(0,2)=="0x")
     bytecode = bytecode.substring(2);
 
