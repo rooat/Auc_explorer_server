@@ -203,6 +203,7 @@ exports.compileContract = async function(req, res){
           }
         }
         let output = JSON.parse(newSolc.compile(JSON.stringify(inputJson)))
+        console.log("output-",output);
         let compileByteCode = output.contracts['xxx.sol'][name].evm.bytecode.object;
         let bytecode = await config.utilWeb3.web3Methods("getCode",{"address":address})
         bytecode = bytecode.substr(2)
