@@ -157,6 +157,13 @@ exports.compileContract = async function(req, res){
   
     try {
       if(config.util.invalidAddr(address) && version && name && input && optimization && abi ){
+        let contrx = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
+        if(!contrx){
+          return res.send({"resp":"address invalid contract"});
+        }
+        if(contrx && contrx.sourceCode){
+          return res.send({"resp":{"status":true,"contract":contrx}});
+        }
         let versionList = versions.releases;
         let wantVersion ; 
         for(var key in versionList){  
