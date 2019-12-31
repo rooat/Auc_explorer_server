@@ -24,7 +24,7 @@
     "node-postgresql": "^1.0.8",
     "serve-favicon": "~2.4.5",
     "socket.io": "^2.0.4",
-    "solc": "^0.5.6",
+    "solc": "^0.5.15",
     "web3": "^1.2.4"
   },
   "devDependencies": {

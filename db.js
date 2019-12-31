@@ -64,7 +64,7 @@ var Contract = new Schema(
     "balance": Number,
     "compilerVersion": String,
     "optimization": Boolean,
-
+    "runs":{type:Number,default:200},
     "description": String,
     "logoUrl": String,
     "timestamp": Number,
