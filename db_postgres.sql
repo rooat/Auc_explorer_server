@@ -1,6 +1,6 @@
 create table block(
-    id int(11) primary key,
-    number int(11),
+    id int primary key,
+    number int,
     hash  varchar(150),
     parentHash  varchar(150),
     nonce  varchar(150),
@@ -12,18 +12,19 @@ create table block(
     miner  varchar(150),
     difficulty  varchar(150),
     totalDifficulty  varchar(150),
-    size  int(11),
+    size int,
     extraData  varchar(150),
-    gasLimit  int(11),
-    gasUsed  int(11),
-    timestamp  int(11),
+    gasLimit int,
+    gasUsed  int,
+    timestamp  int,
     uncles  varchar(150),
     txs  text,
     witness  varchar(150),
-    unique(number));
+    unique(number)
+  );
 
 create table solidityversion ( 
-    id int(11) primary key,
+    id  int primary key,
     path varchar(150),
     version varchar(50),
     build varchar(100),
@@ -34,111 +35,119 @@ create table solidityversion (
 )
 
 create table witness (
-    blocksNum int(11),
-    lastCountTo int(11),
+    id  int primary key,
+    blocksNum  int,
+    lastCountTo  int,
     witness varchar(40),
     version varchar(40)
     status Boolean,
     hash varchar(150),
-    reward int(11),
+    reward  int,
     miner varchar(150),
-    timestamp int(11)
+    timestamp  int,
+    unique(witness)
 );
 
 create table contract (
+    id  int primary key,
     address  varchar(150),
-    blockNumber  int(11),
-    ERC int(11),
+    blockNumber   int,
+    ERC  int,
     creationTransaction  varchar(150),
     contractName  varchar(150),
     tokenName  varchar(150),
     symbol  varchar(150),
     owner  varchar(150),
-    decimals  int(11)
-    totalSupply  int(11)
-    balance  int(11)
+    decimals   int,
+    totalSupply   int,
+    balance   int,
     compilerVersion  varchar(150),
     optimization  Boolean,
     description  varchar(150),
     logoUrl  varchar(100),
-    timestamp  int(11)
+    timestamp   int,
     sourceCode  text,
     abi  text,
-    byteCode  text
+    byteCode  text,
+    unique(address)
 );
 
 create table transaction (
+    id  int primary key,
     hash  varchar(150),
-    nonce  int(11),
+    nonce   int,
     blockHash  varchar(150),
-    blockNumber  int(11) ,
-    transactionIndex  int(11)
-    status int(11)
+    blockNumber   int ,
+    transactionIndex   int
+    status  int
     from  varchar(150),
     to  varchar(150),
     value  varchar(150),
-    gas  int(11),
+    gas   int,
     contractAddress varchar(150),
-    gasUsed int(11),
+    gasUsed  int,
     gasPrice  varchar(150),
-    timestamp  int(11) ,
+    timestamp   int ,
     input  varchar(150),
-    witness  varchar(50)
+    witness  varchar(50),
+    unique(hash)
 );
 
 create table inertransaction(
+    id  int primary key,
         hash  varchar(150),
         from  varchar(150),
         to  varchar(150),
         value  varchar(150),
-        timestamp  int(11),
-        blockNumber  int(11)
-    );
+        timestamp   int,
+        blockNumber   int
+);
 
-create table tokenTransfer(
+create table tokentransfer(
+    id  int primary key,
         transactionHash  varchar(150),
-        blockNumber  int(11)
+        blockNumber   int,
         methodName  varchar(150),
-        amount  int(11)
+        amount   int,
         contractAdd  varchar(150),
         to  varchar(150),
         from  varchar(150),
-        timestamp  int(11)
-    );
+        timestamp   int
+);
 
 create table logevent (
+    id  int primary key,
         address  varchar(150),
         txHash  varchar(150),
-        blockNumber  int(11) ,
-        contractAdd  varchar(150),//same with address
-        timestamp  int(11)
+        blockNumber   int,
+        contractAdd  varchar(150),
+        timestamp   int,
         methodName  varchar(150),
         eventName  varchar(150),
         from  varchar(150),
         to  varchar(150),
-        logIndex  int(11)
+        logIndex   int,
         topics  Array,
         data  varchar(150),
-        gasUsed int(11)
+        gasUsed  int,
         gasPrice  Number
-    );
+);
 
+create table address (
+    id  int primary key,
+        addr  varchar(150),
+        type   int,
+        balance   int
+ );
 
-//all address
-var Address = new Schema(
-    {
-        addr  varchar(150), index  {unique  true}},
-        type  int(11) index  true},//0 normal 1 contract 2 masternode
-        balance  Number
-    });
-var WalletVersion = new Schema(
-    {
+create table walletversion (
+    id  int primary key,
         versionCode  varchar(150),
         version  varchar(150),
         url  varchar(150),
         content varchar(150),
-        createAt Date
-    });
+        createAt  int
+ );
 
 
 

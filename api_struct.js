@@ -16,16 +16,14 @@ async function getBlockList(){
     console.log("data:",data.data.resp)
 } 
 getBlockList();
+
+
 async function getIds(){
     let data = await axios.post(url+'/api/witness/getIds',{"address":"0x046BC7B020dA804A2CF59c7097667cF8bB138389"});
     console.log("data:",data.data.resp)
 } 
 getIds();
-async function totalMasterNodes(){
-    let data = await axios.post(url+'/api/witness/totalMasterNodes',{});
-    console.log("data:",data.data.resp)
-} 
-totalMasterNodes();
+
 async function getInfo(){
     let data = await axios.post(url+'/api/witness/getInfo',{"address":"0x046BC7B020dA804A2CF59c7097667cF8bB138389"});
     console.log("data:",data.data.resp)

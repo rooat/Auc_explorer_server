@@ -213,6 +213,7 @@ exports.compileContract = async function(req, res){
               {$set:{'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input,"abi":abi}},
               {multi: false, upsert: false});
             let contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
+            contract.isVerified = true;
             return res.send({"resp":{"status":true,"contract":contract}})
         }else{
             console.log("false")
