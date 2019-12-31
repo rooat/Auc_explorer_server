@@ -27,6 +27,7 @@ exports.txByHash = async function(req,res){
 exports.txList = async function(req,res){
   let page = req.body.page;
   let ps = config.util.returnPs(page,10);
+  let count = await config.db.Transaction.find().count() 
   let txList = await config.db.Transaction.find().sort({"blockNumber":-1}).skip(ps).limit(10);
-  return res.send({"resp":txList})
+  return res.send({"resp":{"count":count,"txList":txList}})
 }
