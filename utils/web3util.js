@@ -38,6 +38,10 @@ exports.web3Methods = async function(method,data){
             return await web3.eth.getCode(data.address)
         case "decodeParameters":
             return await web3.eth.abi.decodeParameters(data.param1,data.param2)
+        case "hexToAscii":
+            return await web3.utils.hexToAscii(data.hex)
+        case "hexToUtf8":
+            return await web3.utils.hexToUtf8(data.hex)
         default:
             return  await web3.eth.getBlockNumber();
        }
@@ -49,3 +53,4 @@ exports.web3Methods = async function(method,data){
 exports.rpc = rpc
 exports.web3 = web3;
 exports.master = master;
+exports.masterNodeAdd = masterNodeAdd;

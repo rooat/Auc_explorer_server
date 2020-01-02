@@ -112,6 +112,39 @@ exports.todayRewards = async function(req,res){
     return res.send({"resp":null})
 }
 
+exports.masterMesg = async function(req,res){
+    try {
+        let nowDate = parseInt(new Date().getTime()/1000);
+        let aDay = 86400;
+        let lastBlock =await config.db.Block.find({"timestamp":{$lte:(nowDate-aDay)}}).sort({"timestamp":-1}).limit(1);
+        let blockNum =0;
+        if(lastBlock && lastBlock.length >0){
+            blockNum = lastBlock[0].number;
+        }
+        let currBlock = await config.utilWeb3.web3Methods();
+        let meanDayRewards = (currBlock - blockNum)*4.8;
+        let balance = await config.utilWeb3.web3Methods("getBalance",{"address":config.utilWeb3.masterNodeAdd})
+        let masters = await config.master.methods.getInfo("0x06785Ca54A786328604FF4C5889d7A9D2C8A0c52").call();
+        let result = {};
+        if(masters){
+            result.totalNodes = masters.totalNodes;
+            result.onlineNodes = masters.onlineNodes;
+        }
+        let currentBlockNumber = await config.utilWeb3.web3Methods();
+        result.currentBlockNumber  = currentBlockNumber;
+        result.totalReward = currentBlockNumber * 4.8;
+        result.period = 600;
+        result.periodCount = 21;
+        result.balance = balance;
+        result.dayReward = meanDayRewards;
+        return res.send({"resp":result});
+    } catch (error) {
+       console.log("todataReward:",error) 
+    }
+    return res.send({"resp":null})
+}
+
+
 exports.weekRewardsById = async function(req,res){
     try {
         let id = req.body.id;
