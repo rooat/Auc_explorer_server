@@ -91,7 +91,7 @@ exports.tokenTransferByContract = async function(req,res){
         if(startNum>=0 && endNum>0){
           findOpt = {
             "contractAdd":contractAdd,
-            "amount":{$gte:startNum,$lt:endNum}
+            "amount":{$gte:startNum,$lte:endNum}
           }
         }else if(startNum ==null && endNum > 0){
             findOpt = {
