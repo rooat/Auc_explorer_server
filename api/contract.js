@@ -367,32 +367,32 @@ exports.compileContract = async function(req, response){
         var output = targetSolc.compile(inputJsonStr);
         testValidCode(output, data, bytecode, res);
       } else {
-          let vers = require('../soljson-v0.5.4+commit.9549d8ff.js');
-          let solcV = wrapper(vers);
+          // let vers = require('../soljson-v0.5.4+commit.9549d8ff.js');
+          // let solcV = wrapper(vers);
+          //   targetSolc = solcV;
+          //   soliCompCache[version] = targetSolc;//compiler cache
+          //   var output = targetSolc.compile(inputJsonStr);
+          //   output = JSON.parse(output);
+          //   testValidCode(output, data, bytecode, response);
+        solc.loadRemoteVersion(version, function(err, solcV) {
+          console.log("on loadRemoteVersion:"+version);
+          if (err) {
+            console.error(err);
+            data.valid = false;
+            data.err = err.toString();
+            data["verifiedContracts"] = [];
+            res.write(JSON.stringify(data));
+            res.end();
+            return;
+          }
+          else {
             targetSolc = solcV;
             soliCompCache[version] = targetSolc;//compiler cache
             var output = targetSolc.compile(inputJsonStr);
             output = JSON.parse(output);
-            testValidCode(output, data, bytecode, response);
-        // solc.loadRemoteVersion(version, function(err, solcV) {
-        //   console.log("on loadRemoteVersion:"+version);
-        //   if (err) {
-        //     console.error(err);
-        //     data.valid = false;
-        //     data.err = err.toString();
-        //     data["verifiedContracts"] = [];
-        //     res.write(JSON.stringify(data));
-        //     res.end();
-        //     return;
-        //   }
-        //   else {
-        //     targetSolc = solcV;
-        //     soliCompCache[version] = targetSolc;//compiler cache
-        //     var output = targetSolc.compile(inputJsonStr);
-        //     output = JSON.parse(output);
-        //     testValidCode(output, data, bytecode, res);
-        //   }
-        // });
+            testValidCode(output, data, bytecode, res);
+          }
+        });
       }
       return;
     } catch (e) {
