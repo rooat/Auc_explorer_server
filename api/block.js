@@ -105,14 +105,14 @@ exports.getBlockCharDataByWitness = async function(req,res){
                         sevenDay +=1
                     }
                 }
-                let result = {};
-                result.fifDay = firstDay;
-                result.secDay = secDay;
-                result.thirDay = thirDay;
-                result.forthDay = forthDay;
-                result.fifDay = fifDay;
-                result.sixDay = sixDay;
-                result.sevenDay = sevenDay;
+                let result = [];
+                result.push(firstDay);
+                result.push(secDay);
+                result.push(thirDay);
+                result.push(forthDay);
+                result.push(fifDay);
+                result.push(sixDay);
+                result.push(sevenDay);
                 return res.send({"resp":result})
             }
         }
