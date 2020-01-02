@@ -226,9 +226,13 @@ class GrabberClass {
                             transferData.timestamp = blockData.timestamp;
                             //write transfer transaction into db
                             try {
-                                let sqls = "insert into tokentransfer (transaction_hash, block_number,method_name, amount, contract_add , to_add,from_add, timestamp) values (";
-                                let datasql = "'"+transferData.transactionHash+"','"+transferData.blockNumber+"','"+transferData.methodName+"','"+transferData.amount+"','"+transferData.contractAdd+"','"+transferData.to+"','"+transferData.from+"','"+transferData.timestamp+"')";
-                                await pg.query(sqls+datasql);
+                                let findHash = "select * from tokentransfer where transaction_hash = '"+transferData.transactionHash+"'";
+                                let finds =await pg.query(findHash);
+                                if(!finds){
+                                    let sqls = "insert into tokentransfer (transaction_hash, block_number,method_name, amount, contract_add , to_add,from_add, timestamp) values (";
+                                    let datasql = "'"+transferData.transactionHash+"','"+transferData.blockNumber+"','"+transferData.methodName+"','"+transferData.amount+"','"+transferData.contractAdd+"','"+transferData.to+"','"+transferData.from+"','"+transferData.timestamp+"')";
+                                    await pg.query(sqls+datasql);
+                                }
                             } catch (error) {
                                 console.log("token error is:",error)
                             }

@@ -321,7 +321,7 @@ var inputJson = {
 }
 
 
-exports.compileContract = async function(req, res){
+exports.compileContract = async function(req, response){
   var address = req.body.address;
   var version = req.body.version;
   var name = req.body.name;
@@ -346,15 +346,12 @@ exports.compileContract = async function(req, res){
     data.valid = false;
     data.err = "eth.getCode('"+address+"') get empty";
     data["verifiedContracts"] = [];
-    res.write(JSON.stringify(data));
-    res.end();
+    response.write(JSON.stringify(data));
+    response.end();
     return;
   }
 
   inputJson.settings.optimizer.enabled = optimization;
-  // input = input.replace(/pragma\s.*/, "");//删除pragma solidity .....;
-  // input = input.replace(/\/\/.*/g, "");//删除注释//
-  // input = input.replace(/\/\*([\w\W])*\*\//g, "");//删除注释/* */
   inputJson.sources = {'xxx.sol':{
     content: input
   }}
@@ -370,33 +367,32 @@ exports.compileContract = async function(req, res){
         var output = targetSolc.compile(inputJsonStr);
         testValidCode(output, data, bytecode, res);
       } else {
-        solc.loadRemoteVersion(version, function(err, solcV) {
-          console.log("on loadRemoteVersion:"+version);
-          if (err) {
-            console.error(err);
-            data.valid = false;
-            data.err = err.toString();
-            data["verifiedContracts"] = [];
-            res.write(JSON.stringify(data));
-            res.end();
-            return;
-          }
-          else {
+          let vers = require('../soljson-v0.5.4+commit.9549d8ff.js');
+          let solcV = wrapper(vers);
             targetSolc = solcV;
             soliCompCache[version] = targetSolc;//compiler cache
-            // var output = targetSolc.compile(input, optimise);
-            // var output = targetSolc.compile(input, optimise, onCompile);
-            // testValidCode(output, data, bytecode, res);
-
             var output = targetSolc.compile(inputJsonStr);
-            // var output = targetSolc.compile(inputJsonStr, onCompile);
-            // var output = targetSolc.compileStandard(inputJsonStr, onCompile);
-            // var output = targetSolc.compileStandardWrapper(inputJsonStr, onCompile);
-            // console.log("output:",output);
             output = JSON.parse(output);
-            testValidCode(output, data, bytecode, res);
-          }
-        });
+            testValidCode(output, data, bytecode, response);
+        // solc.loadRemoteVersion(version, function(err, solcV) {
+        //   console.log("on loadRemoteVersion:"+version);
+        //   if (err) {
+        //     console.error(err);
+        //     data.valid = false;
+        //     data.err = err.toString();
+        //     data["verifiedContracts"] = [];
+        //     res.write(JSON.stringify(data));
+        //     res.end();
+        //     return;
+        //   }
+        //   else {
+        //     targetSolc = solcV;
+        //     soliCompCache[version] = targetSolc;//compiler cache
+        //     var output = targetSolc.compile(inputJsonStr);
+        //     output = JSON.parse(output);
+        //     testValidCode(output, data, bytecode, res);
+        //   }
+        // });
       }
       return;
     } catch (e) {
