@@ -81,28 +81,28 @@ exports.getBlockCharDataByWitness = async function(req,res){
             let curD = curDate - aday*7;
             let list = await config.db.Block.find({"witness":witness,"timestamp":{$gte:curD}}).sort({"timestamp":-1}).limit(25000);
             if(list && list.length>0){
-                let firstDay =[];
-                let secDay = [];
-                let thirDay = [];
-                let forthDay =[];
-                let fifDay =[];
-                let sixDay =[];
-                let sevenDay =[];
+                let firstDay =0;
+                let secDay = 0;
+                let thirDay = 0;
+                let forthDay =0;
+                let fifDay =0;
+                let sixDay =0;
+                let sevenDay =0;
                 for(var i =0;i<list.length;i++){
                     if(list[i].timestamp >= (curDate-aday)){
-                        firstDay.push(list[i])
+                        firstDay +=1
                     }else if(list[i].timestamp >= (curDate-aday * 2) &&  list[i].timestamp <= (curDate-aday)){
-                        secDay.push(list[i])
+                        secDay +=1
                     }else if(list[i].timestamp >= (curDate-aday * 3) &&  list[i].timestamp <= (curDate-aday*2)){
-                        thirDay.push(list[i]) 
+                        thirDay +=1
                     }else if(list[i].timestamp >= (curDate-aday * 4) &&  list[i].timestamp <= (curDate-aday*3)){
-                        forthDay.push(list[i])
+                        forthDay +=1
                     }else if(list[i].timestamp >= (curDate-aday * 5) &&  list[i].timestamp <= (curDate-aday*4)){
-                        fifDay.push(list[i])
+                        fifDay +=1
                     }else if(list[i].timestamp >= (curDate-aday * 6) &&  list[i].timestamp <= (curDate-aday*5)){
-                        sixDay.push(list[i])
+                        sixDay +=1
                     }else if(list[i].timestamp >= (curDate-aday * 7) &&  list[i].timestamp <= (curDate-aday*6)){
-                        sevenDay.push(list[i])
+                        sevenDay +=1
                     }
                 }
                 let result = {};
