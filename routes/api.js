@@ -22,6 +22,8 @@ router.use(function (req, res, next) {
 router.post('/block/getBlockList',block.getBlockList);
 router.post('/block/getBlockTxTps',block.getBlockTxTps);
 router.post('/block/getBlockByNumber',block.getBlockByNumber);
+router.post('/block/getBlockCharDataByWitness',block.getBlockCharDataByWitness);
+router.post('/block/getBlockListByWitness',block.getBlockListByWitness);
 
 router.post('/witness/getIds',witness.getIds);
 router.post('/witness/getInfo',witness.getInfo);

@@ -71,3 +71,71 @@ exports.getBlockTxTps = async function(req,res){
         return res.send({"resp":result});
     }
 }
+
+exports.getBlockCharDataByWitness = async function(req,res){
+    try {
+        let witness = req.body.witness;
+        if(witness){
+            let aday = 60*60*24;
+            let curDate = parseInt(new Date().getTime()/1000) ;
+            let curD = curDate - aday*7;
+            let list = await config.db.Block.find({"witness":witness,"timestamp":{$gte:curD}}).sort({"timestamp":-1}).limit(25000);
+            if(list && list.length>0){
+                let firstDay =[];
+                let secDay = [];
+                let thirDay = [];
+                let forthDay =[];
+                let fifDay =[];
+                let sixDay =[];
+                let sevenDay =[];
+                for(var i =0;i<list.length;i++){
+                    if(list[i].timestamp >= (curDate-aday)){
+                        firstDay.push(list[i])
+                    }else if(list[i].timestamp >= (curDate-aday * 2) &&  list[i].timestamp <= (curDate-aday)){
+                        secDay.push(list[i])
+                    }else if(list[i].timestamp >= (curDate-aday * 3) &&  list[i].timestamp <= (curDate-aday*2)){
+                        thirDay.push(list[i]) 
+                    }else if(list[i].timestamp >= (curDate-aday * 4) &&  list[i].timestamp <= (curDate-aday*3)){
+                        forthDay.push(list[i])
+                    }else if(list[i].timestamp >= (curDate-aday * 5) &&  list[i].timestamp <= (curDate-aday*4)){
+                        fifDay.push(list[i])
+                    }else if(list[i].timestamp >= (curDate-aday * 6) &&  list[i].timestamp <= (curDate-aday*5)){
+                        sixDay.push(list[i])
+                    }else if(list[i].timestamp >= (curDate-aday * 7) &&  list[i].timestamp <= (curDate-aday*6)){
+                        sevenDay.push(list[i])
+                    }
+                }
+                let result = {};
+                result.fifDay = firstDay;
+                result.secDay = secDay;
+                result.thirDay = thirDay;
+                result.forthDay = forthDay;
+                result.fifDay = fifDay;
+                result.sixDay = sixDay;
+                result.sevenDay = sevenDay;
+                return res.send({"resp":result})
+            }
+        }
+        return res.send({"resp":"params invalid"});
+    } catch (error) {
+        console.log("getBlockByWitness:",error);   
+    }
+    return res.send({"resp":null})
+}
+
+exports.getBlockListByWitness = async function(req,res){
+    try {
+        let witness = req.body.witness;
+        let page = req.body.page;
+        let ps = config.util.returnPs(page,10);
+        if(witness){
+            let count = await config.db.Block.find({"witness":witness}).count();
+            let List = await config.db.Block.find({"witness":witness}).sort({"number":-1}).skip(ps).limit(10);
+            return res.send({"resp":{"count":count,"list":List}})
+        }
+        return res.send({"resp":"param invalid"});
+    } catch (error) {
+      console.log("getBlockListByWitness:",error)  
+    }
+    return res.send({"resp":null});
+}
