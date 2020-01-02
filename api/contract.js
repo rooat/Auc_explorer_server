@@ -66,21 +66,11 @@ exports.tokenTransferByHash = async function(req,res){
 exports.tokenTransferByAddress = async function(req,res){
   try {
     let address = req.body.address;
-    let startNum = req.body.startNum;
-    let endNum = req.body.endNum;
-    
     let page = req.body.page;
     let ps = config.util.returnPs(page,10);
     if(config.util.invalidAddr(address)){
-      let findOpt = {$or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]};
-      if(startNum>=0 && endNum>0){
-        findOpt = {
-          $or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}],
-          "amount":{$gte:startNum,$lt:endNum}
-        }
-      }
-      let count = await config.db.TokenTransfer.find(findOpt).count(); 
-      let tokenTrafer = await config.db.TokenTransfer.find(findOpt).sort({"blockNumber":-1}).skip(ps).limit(10);
+      let count = await config.db.TokenTransfer.find({$or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]}).count(); 
+      let tokenTrafer = await config.db.TokenTransfer.find({$or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]}).sort({"blockNumber":-1}).skip(ps).limit(10);
       return res.send({"resp":{"transList":tokenTrafer,"count":count}});
     }
     return res.send({"resp":"params invalid"})
@@ -92,11 +82,25 @@ exports.tokenTransferByAddress = async function(req,res){
 
 exports.tokenTransferByContract = async function(req,res){
     let contractAdd = req.body.address;
+    let startNum = req.body.startNum;
+    let endNum = req.body.endNum
     let page = req.body.page;
     let ps = config.util.returnPs(page,10);
     if(config.util.invalidAddr(contractAdd)){
-        let count = await config.db.TokenTransfer.find({"contractAdd":contractAdd}).count();
-        let txList = await config.db.TokenTransfer.find({"contractAdd":contractAdd}).sort({"blockNumber":-1}).skip(ps).limit(10);
+        let findOpt = {"contractAdd":contractAdd};
+        if(startNum>=0 && endNum>0){
+          findOpt = {
+            "contractAdd":contractAdd,
+            "amount":{$gte:startNum,$lt:endNum}
+          }
+        }else if(startNum ==null && endNum > 0){
+            findOpt = {
+              "contractAdd":contractAdd,
+              "amount":{$gte:endNum} 
+            }
+        }
+        let count = await config.db.TokenTransfer.find(findOpt).count();
+        let txList = await config.db.TokenTransfer.find(findOpt).sort({"blockNumber":-1}).skip(ps).limit(10);
         return res.send({"resp":{"txList":txList,"count":count}})
     }
     return res.send({"resp":"params invalid"});
