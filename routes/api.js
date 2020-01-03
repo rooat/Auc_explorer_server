@@ -54,6 +54,7 @@ router.post('/contract/tokenTransferByAddress',contract.tokenTransferByAddress);
 router.post('/contract/tokenList',contract.tokenList);
 router.post('/contract/contractList',contract.contractList);
 router.post('/contract/compileContract',contract.compileContract);
+router.post('/contract/tokenTxByAddressByContract',contract.tokenTxByAddressByContract);
 
 router.post('/inner/innerTxOneByHash',inner.innerTxOneByHash);
 router.post('/inner/innerTxListByAddress',inner.innerTxListByAddress);

@@ -63,6 +63,30 @@ exports.tokenTransferByHash = async function(req,res){
   return res.send({"resp":null}) 
 }
 
+exports.tokenTxByAddressByContract = async function(req,res){
+  try {
+    let address  = req.body.address;
+    let contract = req.body.contract;
+    let page = req.body.page;
+    let ps = config.util.returnPs(page,10);
+    if(config.util.invalidAddr(address) && config.util.invalidAddr(contract)){
+      let count = await config.db.TokenTransfer.find({
+        "contractAdd":config.util.noLowUper(contract),
+        $or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]
+      }).count();
+      let list = await config.db.TokenTransfer.find({
+        "contractAdd":config.util.noLowUper(contract),
+        $or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]
+      }).sort({"blockNumber":-1}).skip(ps).limit(10);
+      return res.send({"resp":{"count":count,"list":list}})
+    }
+    return res.send({"resp":"invalid param"})
+  } catch (error) {
+    console.log("tokenTxByAddressByContract:",error);
+  }
+  return res.send({"resp":null})
+}
+
 exports.tokenTransferByAddress = async function(req,res){
   try {
     let address = req.body.address;
