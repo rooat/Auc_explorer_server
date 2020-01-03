@@ -81,46 +81,53 @@ exports.getBlockCharDataByWitness = async function(req,res){
             let curD = curDate - aday*7;
             let list = await config.db.Block.find({"witness":witness,"timestamp":{$gte:curD}}).sort({"timestamp":-1}).limit(25000);
             if(list && list.length>0){
-                // let firstDay =0;
-                // let secDay = 0;
-                // let thirDay = 0;
-                // let forthDay =0;
-                // let fifDay =0;
-                // let sixDay =0;
-                // let sevenDay =0;
-                let firstDay = list.filter((block)=>block.timestamp >= (curDate-aday));
-                let secDay = list.filter((block)=>block.timestamp >= (curDate-aday*2) && block.timestamp <= (curDate-aday));
-                let thirDay = list.filter((block)=>block.timestamp >= (curDate-aday*3) && block.timestamp <= (curDate-aday*2));
-                let forthDay = list.filter((block)=>block.timestamp >= (curDate-aday*4) && block.timestamp <= (curDate-aday*3));
-                let fifDay = list.filter((block)=>block.timestamp >= (curDate-aday*5) && block.timestamp <= (curDate-aday)*4);
-                let sixDay = list.filter((block)=>block.timestamp >= (curDate-aday*6) && block.timestamp <= (curDate-aday)*5); 
-                let sevenDay = list.filter((block)=>block.timestamp >= (curDate-aday*7) && block.timestamp <= (curDate-aday)*6);
+                let firstDay =0;
+                let secDay = 0;
+                let thirDay = 0;
+                let forthDay =0;
+                let fifDay =0;
+                let sixDay =0;
+                let sevenDay =0;
+                // let firstDay = list.filter((block)=>block.timestamp >= (curDate-aday));
+                // let secDay = list.filter((block)=>block.timestamp >= (curDate-aday*2) && block.timestamp <= (curDate-aday));
+                // let thirDay = list.filter((block)=>block.timestamp >= (curDate-aday*3) && block.timestamp <= (curDate-aday*2));
+                // let forthDay = list.filter((block)=>block.timestamp >= (curDate-aday*4) && block.timestamp <= (curDate-aday*3));
+                // let fifDay = list.filter((block)=>block.timestamp >= (curDate-aday*5) && block.timestamp <= (curDate-aday)*4);
+                // let sixDay = list.filter((block)=>block.timestamp >= (curDate-aday*6) && block.timestamp <= (curDate-aday)*5); 
+                // let sevenDay = list.filter((block)=>block.timestamp >= (curDate-aday*7) && block.timestamp <= (curDate-aday)*6);
                 
-                // for(var i =0;i<list.length;i++){
-                //     if(list[i].timestamp >= (curDate-aday)){
-                //         firstDay +=1
-                //     }else if(list[i].timestamp >= (curDate-aday * 2) &&  list[i].timestamp <= (curDate-aday)){
-                //         secDay +=1
-                //     }else if(list[i].timestamp >= (curDate-aday * 3) &&  list[i].timestamp <= (curDate-aday*2)){
-                //         thirDay +=1
-                //     }else if(list[i].timestamp >= (curDate-aday * 4) &&  list[i].timestamp <= (curDate-aday*3)){
-                //         forthDay +=1
-                //     }else if(list[i].timestamp >= (curDate-aday * 5) &&  list[i].timestamp <= (curDate-aday*4)){
-                //         fifDay +=1
-                //     }else if(list[i].timestamp >= (curDate-aday * 6) &&  list[i].timestamp <= (curDate-aday*5)){
-                //         sixDay +=1
-                //     }else if(list[i].timestamp >= (curDate-aday * 7) &&  list[i].timestamp <= (curDate-aday*6)){
-                //         sevenDay +=1
-                //     }
-                // }
+                for(var i =0;i<list.length;i++){
+                    if(list[i].timestamp >= (curDate-aday)){
+                        firstDay +=1
+                    }else if(list[i].timestamp >= (curDate-aday * 2) &&  list[i].timestamp <= (curDate-aday)){
+                        secDay +=1
+                    }else if(list[i].timestamp >= (curDate-aday * 3) &&  list[i].timestamp <= (curDate-aday*2)){
+                        thirDay +=1
+                    }else if(list[i].timestamp >= (curDate-aday * 4) &&  list[i].timestamp <= (curDate-aday*3)){
+                        forthDay +=1
+                    }else if(list[i].timestamp >= (curDate-aday * 5) &&  list[i].timestamp <= (curDate-aday*4)){
+                        fifDay +=1
+                    }else if(list[i].timestamp >= (curDate-aday * 6) &&  list[i].timestamp <= (curDate-aday*5)){
+                        sixDay +=1
+                    }else if(list[i].timestamp >= (curDate-aday * 7) &&  list[i].timestamp <= (curDate-aday*6)){
+                        sevenDay +=1
+                    }
+                }
                 let result = [];
-                result.push(firstDay.length);
-                result.push(secDay.length);
-                result.push(thirDay.length);
-                result.push(forthDay.length);
-                result.push(fifDay.length);
-                result.push(sixDay.length);
-                result.push(sevenDay.length);
+                // result.push(firstDay.length);
+                // result.push(secDay.length);
+                // result.push(thirDay.length);
+                // result.push(forthDay.length);
+                // result.push(fifDay.length);
+                // result.push(sixDay.length);
+                // result.push(sevenDay.length);
+                result.push(firstDay);
+                result.push(secDay);
+                result.push(thirDay);
+                result.push(forthDay);
+                result.push(fifDay);
+                result.push(sixDay);
+                result.push(sevenDay);
                 return res.send({"resp":result})
             }
         }
