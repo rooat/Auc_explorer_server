@@ -9,6 +9,37 @@ const ERC20ABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":
 const SMART_ERCABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"}/*,{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}*/];
 var soliCompCache = {};//solidity compiler cache。generating for compiler cost too much time, so we swap space for time
 
+exports.tokenHistory = async function(req,res){
+  try {
+    let hash = req.body.hash;
+    let contract = req.body.contract;
+    let from = req.body.from;
+    let amount = req.body.amount;
+    let to = req.body.to;
+    console.log(hash)
+    console.log(contract)
+    console.log(from)
+    console.log(to)
+    console.log(amount)
+    if(config.util.invalidAddr(contract) && config.util.invalidHash(hash) && config.util.invalidAddr(from) && config.util.invalidAddr(to) && amount){
+      await config.db.TokenTransfer({
+        "transactionHash": hash,
+        "amount": amount,
+        "contractAdd": contract,
+        "to": to,
+        "from": from,
+        "status":false,
+        "timestamp": parseInt(new Date().getTime()/1000)
+      }).save();
+      return res.send({"resp":"success"})
+    }
+    return res.send({"resp":'ivalid params'})
+  } catch (error) {
+    console.log("tokenHistroy");
+  }
+  return res.send({"resp":null})
+}
+
 exports.tokenInfo = async function(req,res){
     let contractAdd = req.body.address;
     if(config.util.invalidAddr(contractAdd)){
