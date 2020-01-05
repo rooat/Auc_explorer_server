@@ -318,7 +318,7 @@ var writeTransactionsToDB = async function(blockData) {
                 }
             }
 
-            if(!(txData ==null && txData.to == "0x1111111111111111111111111111111111111111" && txData.value == 0)){
+            if(!(txData =="0x" && txData.to == "0x1111111111111111111111111111111111111111" && txData.value == 0)){
                 if(Number(txData.value)>0){
                     if(txData.from)
                         addrs.push(txData.from, "-"+txData.value);
