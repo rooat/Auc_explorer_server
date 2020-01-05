@@ -113,7 +113,7 @@ var TokenTransfer = new Schema(
         "contractAdd": String,
         "to": String,
         "from": String,
-        "status":Boolean,
+        "status":Number,
         "timestamp": Number
     });
 

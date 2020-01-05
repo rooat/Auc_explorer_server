@@ -16,11 +16,6 @@ exports.tokenHistory = async function(req,res){
     let from = req.body.from;
     let amount = req.body.amount;
     let to = req.body.to;
-    console.log(hash)
-    console.log(contract)
-    console.log(from)
-    console.log(to)
-    console.log(amount)
     if(config.util.invalidAddr(contract) && config.util.invalidHash(hash) && config.util.invalidAddr(from) && config.util.invalidAddr(to) && amount){
       await config.db.TokenTransfer({
         "transactionHash": hash,
@@ -28,7 +23,7 @@ exports.tokenHistory = async function(req,res){
         "contractAdd": contract,
         "to": to,
         "from": from,
-        "status":false,
+        "status":1,
         "timestamp": parseInt(new Date().getTime()/1000)
       }).save();
       return res.send({"resp":"success"})

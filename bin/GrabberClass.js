@@ -165,8 +165,23 @@ var writeTransactionsToDB = async function(blockData) {
                     addrs.push(innerTo, innerValue);
                 }
             }
-            if(receiptData.status!=null)
+            if(receiptData.status!=null){
                 txData.status = receiptData.status;
+            }
+            if(txData.status ==0){
+                let tokenTransferTx = await configs.db.TokenTransfer.find({"transactionHash":txData.hash});
+                if(tokenTransferTx && tokenTransferTx.length>0){
+                    for(var ix=0;ix<tokenTransferTx.length;ix++){
+                        await configs.db.TokenTransfer.update({
+                            "_id":tokenTransferTx[ix]._id
+                        },{
+                            $set:{
+                                "status":3
+                            }
+                        })
+                    }
+                }
+            }
 
             if(txData.input && txData.input.length>2){// contract create, Event logs of internal transaction
                 if(txData.to == null){//contract create
@@ -244,7 +259,7 @@ var writeTransactionsToDB = async function(blockData) {
                         transferData.transactionHash= txData.hash;
                         transferData.blockNumber= blockData.number;
                         transferData.contractAdd= txData.to;
-                        transferData.status = true;
+                        transferData.status = 2;
                         transferData.timestamp = blockData.timestamp;
                         //write transfer transaction into db
                         TokenTransfer.update(
