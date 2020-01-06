@@ -15,7 +15,7 @@ exports.addToken = async function(req,res){
     if(contract){
       let conData = await config.db.Contract.findOne({"address":config.util.noLowUper(contract),"totalSupply":{$gt:0}});
       if(!conData){
-        return res.send({"resp":"invalid deployed"})
+        return res.send({"resp":"invalid deployed or invalid Token"})
       }
       await config.db.TokenAdd({
         "address":contract
