@@ -9,6 +9,26 @@ const ERC20ABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":
 const SMART_ERCABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"}/*,{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}*/];
 var soliCompCache = {};//solidity compiler cache。generating for compiler cost too much time, so we swap space for time
 
+exports.addToken = async function(){
+  try {
+    let contract = req.body.contract;
+    if(config.util.invalidAddr(contract)){
+      let conData = await config.db.Contract.findOne({"address":contract,"totalSupply":{$gt:0}});
+      if(!conData){
+        return res.send({"resp":"invalid deployed"})
+      }
+      await config.db.TokenAdd({
+        "address":contract
+      })
+      return res.send({"resp":"success"})
+    }
+    return res.send({"resp":"invalid params"});
+  } catch (error) {
+    console.log("addToken.")
+  }
+  return res.send({"resp":null});
+}
+
 exports.tokenHistory = async function(req,res){
   try {
     let hash = req.body.hash;
@@ -94,7 +114,12 @@ exports.tokenTxByAddressByContract = async function(req,res){
     let address  = req.body.address;
     let contract = req.body.contract;
     let page = req.body.page;
-    let ps = config.util.returnPs(page,10);
+    let pageSize = req.body.pageSize;
+    if(!pageSize || pageSize<=0){
+      pageSize = 10;
+    }
+    let ps = config.util.returnPs(page,pageSize);
+    
     if(config.util.invalidAddr(address) && config.util.invalidAddr(contract)){
       let count = await config.db.TokenTransfer.find({
         "contractAdd":config.util.noLowUper(contract),
@@ -103,7 +128,7 @@ exports.tokenTxByAddressByContract = async function(req,res){
       let list = await config.db.TokenTransfer.find({
         "contractAdd":config.util.noLowUper(contract),
         $or:[{"from":config.util.noLowUper(address)},{"to":config.util.noLowUper(address)}]
-      }).sort({"blockNumber":-1}).skip(ps).limit(10);
+      }).sort({"blockNumber":-1}).skip(ps).limit(pageSize);
       return res.send({"resp":{"count":count,"list":list}})
     }
     return res.send({"resp":"invalid param"})
@@ -180,8 +205,8 @@ exports.tokenList = async function(req,res){
   try {
       let page = req.body.page;
       let ps = config.util.returnPs(page,10);
-      let tokenCount = await config.db.Contract.find({"totalSupply":{$gt:0}}).count();
-      let tokenres = await config.db.Contract.find({"totalSupply":{$gt:0}}).skip(ps).limit(10);
+      let tokenCount = await config.db.TokenAdd.find().count();
+      let tokenres = await config.db.TokenAdd.find().skip(ps).limit(10);
       // console.log("tken:",tokenCount)
       // console.log("to:",tokenres)
       let result = {

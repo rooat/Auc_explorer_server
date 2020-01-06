@@ -49,6 +49,10 @@ var Witness = new Schema(
 
     });
 
+var TokenAdd = new Schema({
+    "address":String,
+    "createAt":{type:Date,default:Date.now}
+})
 var Contract = new Schema(
 {
     "address": {type: String, index: {unique: true}},
@@ -153,6 +157,7 @@ var WalletVersion = new Schema(
         "content":String,
         "createAt":Date
     });
+mongoose.model('TokenAdd',TokenAdd);
 mongoose.model('WalletVersion',WalletVersion)
 mongoose.model('LogEvent', LogEvent);
 mongoose.model('TokenTransfer', TokenTransfer);
@@ -163,6 +168,7 @@ mongoose.model('Transaction', Transaction);
 mongoose.model('InerTransaction', InerTransaction);
 mongoose.model('Witness', Witness);
 mongoose.model('SolidityVersion',SolidityVersion);
+module.exports.TokenAdd = mongoose.model('TokenAdd');
 module.exports.SolidityVersion = mongoose.model('SolidityVersion');
 module.exports.Block = mongoose.model('Block');
 module.exports.Contract = mongoose.model('Contract');
