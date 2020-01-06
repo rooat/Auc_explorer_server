@@ -18,7 +18,8 @@ exports.addToken = async function(req,res){
         return res.send({"resp":"invalid deployed or invalid Token"})
       }
       await config.db.TokenAdd({
-        "address":contract
+        "address":contract,
+        "tokenName":conData.tokenName
       }).save()
       return res.send({"resp":"success"})
     }

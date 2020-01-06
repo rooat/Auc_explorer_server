@@ -51,6 +51,7 @@ var Witness = new Schema(
 
 var TokenAdd = new Schema({
     "address":String,
+    "tokenName":String,
     "createAt":{type:Date,default:Date.now}
 })
 var Contract = new Schema(
