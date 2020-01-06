@@ -11,7 +11,7 @@ var soliCompCache = {};//solidity compiler cache。generating for compiler cost 
 
 exports.addToken = async function(req,res){
   try {
-    let contract = req.body.contract;
+    let contract = req.body.address;
     if(config.util.invalidAddr(contract)){
       let conData = await config.db.Contract.findOne({"address":contract,"totalSupply":{$gt:0}});
       if(!conData){
