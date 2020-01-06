@@ -12,14 +12,14 @@ var soliCompCache = {};//solidity compiler cache。generating for compiler cost 
 exports.addToken = async function(req,res){
   try {
     let contract = req.body.address;
-    if(config.util.invalidAddr(contract)){
-      let conData = await config.db.Contract.findOne({"address":contract,"totalSupply":{$gt:0}});
+    if(contract){
+      let conData = await config.db.Contract.findOne({"address":config.util.noLowUper(contract),"totalSupply":{$gt:0}});
       if(!conData){
         return res.send({"resp":"invalid deployed"})
       }
       await config.db.TokenAdd({
         "address":contract
-      })
+      }).save()
       return res.send({"resp":"success"})
     }
     return res.send({"resp":"invalid params"});
