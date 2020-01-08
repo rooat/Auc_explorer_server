@@ -26,6 +26,7 @@ router.post('/block/getBlockCharDataByWitness',block.getBlockCharDataByWitness);
 router.post('/block/getBlockListByWitness',block.getBlockListByWitness);
 
 router.post('/witness/getIds',witness.getIds);
+router.post('/witness/getRefIds',witness.getRefIds);
 router.post('/witness/getInfo',witness.getInfo);
 router.post('/witness/nodes',witness.nodes);
 router.post('/witness/todayRewards',witness.todayRewards);

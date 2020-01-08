@@ -17,6 +17,25 @@ exports.getIds = async function(req,res){
       return res.send({"resp":null})  
     }
 }
+
+exports.getRefIds = async function(req,res){
+    let address = req.body.address;
+    let page = req.body.page;
+    try {
+        let ps = config.util.returnPs(page,5);
+        if(config.util.invalidAddr(address)){
+            let result = await config.master.methods.getIds(address,ps).call();
+            if(result){
+                return res.send({"resp":result.data})
+            }
+            return res.send({"resp":null})
+        }
+        return res.send({"resp":"param invalid"})
+    } catch (error) {
+      return res.send({"resp":null})  
+    }
+}
+
 exports.nodes = async function(req,res){
     try {
         let ids = req.body.id;
