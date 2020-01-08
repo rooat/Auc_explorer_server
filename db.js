@@ -22,7 +22,8 @@ var Block = new Schema(
     "timestamp": {type: Number, index: true},
     "uncles": [String],
     "txs": [String],//same with transactions
-    "witness": {type: String, index: true}
+    "witness": {type: String, index: true},
+    "referrer":String
 
 });
 var SolidityVersion = new Schema({

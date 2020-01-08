@@ -72,6 +72,8 @@ var writeBlockToDB =async function(blockData) {
     }
     let block = await configs.db.Block.findOne({"hash":blockData.hash})
     if(!block){
+        let result = await config.master.methods.nodes("0x"+blockData.witness).call()
+        blockData.referrer = result.referrer ;
         await configs.db.Block(blockData).save();
         let version;
         let extraData = hex2ascii(blockData.extraData);
