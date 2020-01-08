@@ -24,7 +24,7 @@ exports.getRefIds = async function(req,res){
     try {
         let ps = config.util.returnPs(page,5);
         if(config.util.invalidAddr(address)){
-            let result = await config.master.methods.getIds(address,ps).call();
+            let result = await config.master.methods.getRefIds(address,ps).call();
             if(result){
                 return res.send({"resp":result.data})
             }
