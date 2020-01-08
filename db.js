@@ -46,7 +46,8 @@ var Witness = new Schema(
         "hash":String,
         "reward":Number,
         "miner":String,
-        "timestamp": Number
+        "timestamp": Number,
+        "referrer":String
 
     });
 

@@ -49,7 +49,7 @@ exports.nodes = async function(req,res){
                 let idxx = ids.substr(2);
                 
                 let countBlock = await config.db.Block.find({"witness":idxx}).count();
-                reus.totalReward = countBlock*4.8;
+                reus.totalReward = countBlock*config.reward;
                 reus.coinbase = result.coinbase;
                 reus.status = result.status;
                 let curBlockNumber = await config.utilWeb3.web3Methods();
@@ -125,7 +125,7 @@ exports.todayRewards = async function(req,res){
             blockNum = lastBlock[0].number;
         }
         let currBlock = await config.utilWeb3.web3Methods();
-        let meanDayRewards = (currBlock - blockNum)*4.8;
+        let meanDayRewards = (currBlock - blockNum)*config.reward;
         return res.send({"resp":meanDayRewards});
     } catch (error) {
        console.log("todataReward:",error) 
@@ -143,7 +143,7 @@ exports.masterMesg = async function(req,res){
             blockNum = lastBlock[0].number;
         }
         let currBlock = await config.utilWeb3.web3Methods();
-        let meanDayRewards = (currBlock - blockNum)*4.8;
+        let meanDayRewards = (currBlock - blockNum)*config.reward;
         let balance = await config.utilWeb3.web3Methods("getBalance",{"address":config.utilWeb3.masterNodeAdd})
         let masters = await config.master.methods.getInfo("0x06785Ca54A786328604FF4C5889d7A9D2C8A0c52").call();
         let result = {};
@@ -153,7 +153,7 @@ exports.masterMesg = async function(req,res){
         }
         let currentBlockNumber = await config.utilWeb3.web3Methods();
         result.currentBlockNumber  = currentBlockNumber;
-        result.totalReward = currentBlockNumber * 4.8;
+        result.totalReward = currentBlockNumber * config.reward;
         result.period = 600;
         result.periodCount = 21;
         result.balance = balance;
@@ -177,7 +177,7 @@ exports.weekRewardsById = async function(req,res){
             let nowDate = parseInt(new Date().getTime()/1000);
             let aWeek = 86400*7;
             let blockCount =await config.db.Block.find({"witness":id,"timestamp":{$gte:(nowDate-aWeek)}}).count();
-            reward = blockCount * 4.8;
+            reward = blockCount * config.reward;
             return res.send({"resp":reward});
         }
        return res.send({"resp":"param invalid"}) 

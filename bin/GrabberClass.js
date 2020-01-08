@@ -81,7 +81,7 @@ var writeBlockToDB =async function(blockData) {
             version = extraData.charCodeAt(3)+"."+extraData.charCodeAt(4)+"."+extraData.charCodeAt(5);
         }
         await configs.db.Witness.update({"witness":blockData.witness},
-        {$set:{"lastCountTo":blockData.number, "version": version, "hash":blockData.hash, "miner":blockData.miner, "timestamp":blockData.timestamp, "status":true},
+        {$set:{"referrer":result.referrer,"lastCountTo":blockData.number, "version": version, "hash":blockData.hash, "miner":blockData.miner, "timestamp":blockData.timestamp, "status":true},
         $inc:{"blocksNum":1, "reward":0.3375}},
         {upsert: true});
 

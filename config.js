@@ -4,6 +4,8 @@ var util = require('./utils/util');
 var tokenABI = require('./contractTpl/tokenABI.json')
 var web3 = utilWeb3.web3;
 var master = utilWeb3.master();
+var reward = 4.56;
+var rereward = 0.24;
 
 
 module.exports ={
@@ -12,5 +14,7 @@ module.exports ={
     utilWeb3,
     master,
     util,
-    tokenABI
+    tokenABI,
+    reward,
+    rereward
 }
