@@ -71,7 +71,7 @@ exports.nodes = async function(req,res){
                 reus.blockOnline = blockOnline;
                 reus.blockOnlineAcc = blockOnlineAcc;
                 reus.referrer = result.referrer;
-                console.log(result)
+                // console.log(result)
                 return res.send({"resp":reus})
             }
             return res.send({"resp":null})
