@@ -223,284 +223,113 @@ exports.tokenList = async function(req,res){
 
 
 
-// exports.compileContract = async function(req, res){
-//     let address = req.body.address;
-//     let version = req.body.version;
-//     let name = req.body.name;
-//     let input = req.body.code;
-//     let optimization = (req.body.optimization ==1) ? true:false;
-//     let abi = req.body.abi;
+exports.compileContract = async function(req, res){
+    let address = req.body.address;
+    let version = req.body.version;
+    let name = req.body.name;
+    let input = req.body.code;
+    let optimization = (req.body.optimization ==1) ? true:false;
+    let abi = req.body.abi;
   
-//     try {
-//       if(config.util.invalidAddr(address) && version && name && input && optimization && abi ){
-//         let contrx = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
-//         if(!contrx){
-//           return res.send({"resp":"address invalid contract"});
-//         }
-//         if(contrx && contrx.sourceCode){
-//           return res.send({"resp":{"status":true,"contract":contrx}});
-//         }
-//         let versionList = versions.releases;
-//         let wantVersion ; 
-//         for(var key in versionList){  
-//             let versionss = versionList[key];
-//             if(versionss.indexOf(version)!=-1){
-//               wantVersion = versionss;
-//             }
-//         }
-//         if(!wantVersion){
-//           return res.send({"resp":"version invalid"})
-//         }
-//         console.log("wanteVersion:",wantVersion);
-//         // let vers = require('../solcbin/'+wantVersion);
-//         let vers = require('../'+wantVersion);
-//         let newSolc = wrapper(vers);
-//         // console.log("input::",)
-//         let inputJson = {
-//           language: 'Solidity',
-//           settings: {
-//             optimizer: {
-//               enabled: optimization,
-//               runs: 200
-//             },
-//             outputSelection: {
-//                   '*': {
-//                       '*': ['abi', 'evm.bytecode']
-//                   }
-//               }
-//           },
-//           "sources" : {
-//             'xxx.sol':{
-//               content: input
-//             }
-//           }
-//         }
-//         let output = JSON.parse(newSolc.compile(JSON.stringify(inputJson)))
-//         console.log("output-",output);
-//         let compileByteCode = output.contracts['xxx.sol'][name].evm.bytecode.object;
-//         let bytecode = await config.utilWeb3.web3Methods("getCode",{"address":address})
-//         bytecode = bytecode.substr(2)
-//         var testCode = bytecode.substring(10);
-//         var endIndex = testCode.length;
-//         if(testCode.indexOf("7a7a72305820")>-1)
-//             endIndex = testCode.indexOf("7a7a72305820");
-//         else if(testCode.length>68){
-//             endIndex = 68
-//         }
-//         if(endIndex==-1)
-//             endIndex = testCode.length;
-//         testCode = testCode.substring(0,endIndex);
-
-//         if(compileByteCode.indexOf(testCode)!=-1){
-//             console.log("true")
-//             let erc = checkERC(abi);
-//             await config.db.Contract.update(
-//               {address: address},
-//               {$set:{"ERC":erc,'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input,"abi":abi}},
-//               {multi: false, upsert: false});
-//             let contract = {};
-//             contract.isVerified = true;
-//             contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
-            
-//             return res.send({"resp":{"status":true,"contract":contract}})
-//         }else{
-//             console.log("false")
-//             return res.send({"resp":{"status":false,"contract":null}})
-//         }
-//         // return res.send({"resp":"ddddd"})
-//       }
-//       return res.send({"resp":"params invalid"})
-//     } catch (error) {
-//       console.log("compileContract:",error);
-//     }
-
-//     return res.send({"resp":null})
-// }
-
-// var checkERC = function(abi){
-//   let abiObj = abi;
-//   if(typeof(abi)=="string"){
-//     abiObj = JSON.parse(abi);
-//   }
-
-//   let isERC20 = false;
-//   let isERC223 = false;
-//   let exist = false;
-//   let different = false;
-//   let transerNum = 0;
-//   for(var i=0; i<ERC223ABI.length; i++){
-//     let element = ERC223ABI[i];
-//     if(element.name=="transfer"){
-//       transerNum++;
-//     }
-//     exist = false;
-//     for(var j=0; j<abiObj.length; j++){
-//       abiObjEle = abiObj[j];
-//       if(abiObjEle.name == element.name){
-//         exist = true;
-//         break;
-//       }
-//     }
-//     if(!exist){
-//       different = true;
-//       break;
-//     }
-//   }
-//   if(!different && transerNum>1){
-//     isERC223 = true;
-//   }
-
-//   if(!isERC223){
-//     different = false;
-//     for(var i=0; i<SMART_ERCABI.length; i++){
-//       ERC20Ele = SMART_ERCABI[i];
-//       exist = false;
-//       for(var j=0; j<abiObj.length; j++){
-//         let abiObjEle =abiObj[j];
-//         if(ERC20Ele.name==abiObjEle.name){
-//           exist = true;
-//           break;
-//         }
-//       }
-//       if(!exist){
-//         different = true;
-//         break;
-//       }
-//     }
-//     if(!different){
-//       isERC20 = true;
-//     }
-//   }
-
-//   if(isERC223){
-//     return 3;
-//   }else if(isERC20){
-//     return 2;
-//   }
-//   return 0;
-// }
-
-
-var inputJson = {
-  language: 'Solidity',
-  settings: {
-    optimizer: {
-      enabled: true,
-      runs: 200
-    },
-    outputSelection: {
-          '*': {
-              '*': ['abi', 'evm.bytecode']
-          }
-      }
-  }
-}
-
-
-exports.compileContract = async function(req, response){
-  var address = req.body.address;
-  var version = req.body.version;
-  var name = req.body.name;
-  var input = req.body.code;
-  var optimization = (req.body.optimization) ? true : false;
-  let abi = req.body.abi;
-
-  var bytecode =await config.web3.eth.getCode(address);
-  if (bytecode.substring(0,2)=="0x")
-    bytecode = bytecode.substring(2);
-
-  var data = {
-    "address": address,
-    "ERC": 0,
-    "compilerVersion": version,
-    "optimization": optimization,
-    "contractName": name,
-    "sourceCode": input,
-    "abi":""
-  }
-  if(bytecode==""){
-    data.valid = false;
-    data.err = "eth.getCode('"+address+"') get empty";
-    data["verifiedContracts"] = [];
-    response.write(JSON.stringify(data));
-    response.end();
-    return;
-  }
-
-  inputJson.settings.optimizer.enabled = optimization;
-  inputJson.sources = {'xxx.sol':{
-    content: input
-  }}
-  inputJsonStr = JSON.stringify(inputJson);
-
-  var targetSolc = soliCompCache[version];
-  // if(!targetSolc){ 缓存不定时失效
-    if(true){
     try {
-      // latest version doesn't need to be loaded remotely
-      if (version == "latest") {
-        targetSolc = solc;
-        var output = targetSolc.compile(inputJsonStr);
-        testValidCode(output, data, bytecode, res);
-      } else {
-          // let vers = require('../soljson-v0.5.4+commit.9549d8ff.js');
-          // let solcV = wrapper(vers);
-          //   targetSolc = solcV;
-          //   soliCompCache[version] = targetSolc;//compiler cache
-          //   var output = targetSolc.compile(inputJsonStr);
-          //   output = JSON.parse(output);
-          //   testValidCode(output, data, bytecode, response);
-        solc.loadRemoteVersion(version, function(err, solcV) {
-          console.log("on loadRemoteVersion:"+version);
-          if (err) {
-            console.error(err);
-            data.valid = false;
-            data.err = err.toString();
-            data["verifiedContracts"] = [];
-            response.write(JSON.stringify(data));
-            response.end();
-            return;
+      if(config.util.invalidAddr(address) && version && name && input && optimization && abi ){
+        let contrx = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
+        if(!contrx){
+          return res.send({"resp":"address invalid contract"});
+        }
+        if(contrx && contrx.sourceCode){
+          return res.send({"resp":{"status":true,"contract":contrx}});
+        }
+        let versionList = versions.releases;
+        let wantVersion ; 
+        for(var key in versionList){  
+            let versionss = versionList[key];
+            if(versionss.indexOf(version)!=-1){
+              wantVersion = versionss;
+            }
+        }
+        if(!wantVersion){
+          return res.send({"resp":"version invalid"})
+        }
+        console.log("wanteVersion:",wantVersion);
+        let vers = require('../solcbin/'+wantVersion);
+        // let vers = require('../'+wantVersion);
+        let newSolc = wrapper(vers);
+        // console.log("input::",)
+        let inputJson = {
+          language: 'Solidity',
+          settings: {
+            optimizer: {
+              enabled: optimization,
+              runs: 200
+            },
+            outputSelection: {
+                  '*': {
+                      '*': ['abi', 'evm.bytecode']
+                  }
+              }
+          },
+          "sources" : {
+            'xxx.sol':{
+              content: input
+            }
           }
-          else {
-            targetSolc = solcV;
-            soliCompCache[version] = targetSolc;//compiler cache
-            var output = targetSolc.compile(inputJsonStr);
-            output = JSON.parse(output);
-            testValidCode(output, data, bytecode, res);
-          }
-        });
+        }
+        let output = JSON.parse(newSolc.compile(JSON.stringify(inputJson)))
+        console.log("output-",output);
+        let compileByteCode = output.contracts['xxx.sol'][name].evm.bytecode.object;
+        let bytecode = await config.utilWeb3.web3Methods("getCode",{"address":address})
+        bytecode = bytecode.substr(2)
+        var testCode = bytecode.substring(10);
+        var endIndex = testCode.length;
+        if(testCode.indexOf("7a7a72305820")>-1)
+            endIndex = testCode.indexOf("7a7a72305820");
+        else if(testCode.length>68){
+            endIndex = 68
+        }
+        if(endIndex==-1)
+            endIndex = testCode.length;
+        testCode = testCode.substring(0,endIndex);
+
+        if(compileByteCode.indexOf(testCode)!=-1){
+            console.log("true")
+            let erc = checkERC(abi);
+            await config.db.Contract.update(
+              {address: address},
+              {$set:{"ERC":erc,'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input,"abi":abi}},
+              {multi: false, upsert: false});
+            let contract = {};
+            contract.isVerified = true;
+            contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
+            
+            return res.send({"resp":{"status":true,"contract":contract}})
+        }else{
+            console.log("false")
+            return res.send({"resp":{"status":false,"contract":null}})
+        }
+        // return res.send({"resp":"ddddd"})
       }
-      return;
-    } catch (e) {
-      console.error(e.stack);
-      data.valid = false;
-      data["verifiedContracts"] = [];
-      response.write(JSON.stringify(data));
-      response.end();
-      return;
+      return res.send({"resp":"params invalid"})
+    } catch (error) {
+      console.log("compileContract:",error);
     }
-  }else{
-    var output = targetSolc.compile(inputJsonStr);
-    testValidCode(output, data, bytecode, res);
-  }
+
+    return res.send({"resp":null})
 }
 
-
-//check is token contract
-//0：normal contract 2：ERC20 3：ERC223
 var checkERC = function(abi){
-  var abiObj;
-  if(typeof(abi)=="string")
+  let abiObj = abi;
+  if(typeof(abi)=="string"){
     abiObj = JSON.parse(abi);
-  else
-    abiObj = abi;
-  var isERC20 = false;
-  var isERC223 = false;
-  var exist = false;
-  var different = false;
-  var transerNum = 0;
+  }
+
+  let isERC20 = false;
+  let isERC223 = false;
+  let exist = false;
+  let different = false;
+  let transerNum = 0;
   for(var i=0; i<ERC223ABI.length; i++){
-    var element = ERC223ABI[i];
+    let element = ERC223ABI[i];
     if(element.name=="transfer"){
       transerNum++;
     }
@@ -527,7 +356,7 @@ var checkERC = function(abi){
       ERC20Ele = SMART_ERCABI[i];
       exist = false;
       for(var j=0; j<abiObj.length; j++){
-        abiObjEle =abiObj[j];
+        let abiObjEle =abiObj[j];
         if(ERC20Ele.name==abiObjEle.name){
           exist = true;
           break;
@@ -543,76 +372,250 @@ var checkERC = function(abi){
     }
   }
 
-  if(isERC223)
+  if(isERC223){
     return 3;
-  else if(isERC20)
+  }else if(isERC20){
     return 2;
-
+  }
   return 0;
 }
 
-var testValidCode = async function(output, data, bytecode, response) {
-  var verifiedContracts = [];
-  var targetContractName = data.contractName;
-  var allContractObj = output.contracts['xxx.sol'];
 
-  if(!allContractObj){
-    data.valid = false;
-    data["verifiedContracts"] = verifiedContracts;
-    response.write(JSON.stringify(data));
-    response.end();
-    return;
-  }
+// var inputJson = {
+//   language: 'Solidity',
+//   settings: {
+//     optimizer: {
+//       enabled: true,
+//       runs: 200
+//     },
+//     outputSelection: {
+//           '*': {
+//               '*': ['abi', 'evm.bytecode']
+//           }
+//       }
+//   }
+// }
 
-  var targetContract = allContractObj[targetContractName]
-  var concatByteCode = targetContract.evm.bytecode.object;
-  for (var contractName in allContractObj) {
-    verifiedContracts.push({"name": contractName,
-                            "abi": JSON.stringify(allContractObj[contractName].abi),
-                            "bytecode": allContractObj[contractName].evm.bytecode.object});
-  }
 
-  var testCode = bytecode.substring(10,);
-  var endIndex = testCode.length;
-  if(testCode.indexOf("7a7a72305820")>-1)
-    endIndex = testCode.indexOf("7a7a72305820");
-  else if(testCode.length>68){
-    endIndex = 68
-  }
-  if(endIndex==-1)
-    endIndex = testCode.length;
-  testCode = testCode.substring(0,endIndex);
-  //console.log("bytecode on blockchain:");
-  //console.log(testCode);
-  if (!targetContract){
-    data.valid = false;
-    data["verifiedContracts"] = verifiedContracts;
-    response.write(JSON.stringify(data));
-    response.end();
-    return;
-  }else if(concatByteCode.indexOf(testCode) > -1){
-    data.valid = true;
-    data.abi = JSON.stringify(targetContract.abi);
-    data.byteCode = bytecode;
-    data["verifiedContracts"] = verifiedContracts;
-    //write to db
-    var  ERCType = checkERC(data.abi);
-    data.ERC = ERCType;
-    await config.db.Contract.update(
-      {address: data.address},
-      {$set:{'ERC':data.ERC, 'compilerVersion':data.compilerVersion, 'optimization':data.optimization, 'contractName':data.contractName, 'sourceCode':data.sourceCode, 'abi':data.abi}},
-      {multi: false, upsert: false}
-    );
-    let contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
+// exports.compileContract = async function(req, response){
+//   var address = req.body.address;
+//   var version = req.body.version;
+//   var name = req.body.name;
+//   var input = req.body.code;
+//   var optimization = (req.body.optimization) ? true : false;
+//   let abi = req.body.abi;
+
+//   var bytecode =await config.web3.eth.getCode(address);
+//   if (bytecode.substring(0,2)=="0x")
+//     bytecode = bytecode.substring(2);
+
+//   var data = {
+//     "address": address,
+//     "ERC": 0,
+//     "compilerVersion": version,
+//     "optimization": optimization,
+//     "contractName": name,
+//     "sourceCode": input,
+//     "abi":""
+//   }
+//   if(bytecode==""){
+//     data.valid = false;
+//     data.err = "eth.getCode('"+address+"') get empty";
+//     data["verifiedContracts"] = [];
+//     response.write(JSON.stringify(data));
+//     response.end();
+//     return;
+//   }
+
+//   inputJson.settings.optimizer.enabled = optimization;
+//   inputJson.sources = {'xxx.sol':{
+//     content: input
+//   }}
+//   inputJsonStr = JSON.stringify(inputJson);
+
+//   var targetSolc = soliCompCache[version];
+//   // if(!targetSolc){ 缓存不定时失效
+//     if(true){
+//     try {
+//       // latest version doesn't need to be loaded remotely
+//       if (version == "latest") {
+//         targetSolc = solc;
+//         var output = targetSolc.compile(inputJsonStr);
+//         testValidCode(output, data, bytecode, res);
+//       } else {
+//           // let vers = require('../soljson-v0.5.4+commit.9549d8ff.js');
+//           // let solcV = wrapper(vers);
+//           //   targetSolc = solcV;
+//           //   soliCompCache[version] = targetSolc;//compiler cache
+//           //   var output = targetSolc.compile(inputJsonStr);
+//           //   output = JSON.parse(output);
+//           //   testValidCode(output, data, bytecode, response);
+//         solc.loadRemoteVersion(version, function(err, solcV) {
+//           console.log("on loadRemoteVersion:"+version);
+//           if (err) {
+//             console.error(err);
+//             data.valid = false;
+//             data.err = err.toString();
+//             data["verifiedContracts"] = [];
+//             console.log("dddd:",data)
+//             response.write(JSON.stringify(data));
+//             response.end();
+//             return;
+//           }
+//           else {
+//             targetSolc = solcV;
+//             soliCompCache[version] = targetSolc;//compiler cache
+//             var output = targetSolc.compile(inputJsonStr);
+//             output = JSON.parse(output);
+//             console.log("testval.....")
+//             testValidCode(output, data, bytecode, res);
+//           }
+//         });
+//       }
+//       return;
+//     } catch (e) {
+//       console.error(e.stack);
+//       data.valid = false;
+//       data["verifiedContracts"] = [];
+//       response.write(JSON.stringify(data));
+//       response.end();
+//       return;
+//     }
+//   }else{
+//     var output = targetSolc.compile(inputJsonStr);
+//     testValidCode(output, data, bytecode, res);
+//   }
+// }
+
+
+// //check is token contract
+// //0：normal contract 2：ERC20 3：ERC223
+// var checkERC = function(abi){
+//   var abiObj;
+//   if(typeof(abi)=="string")
+//     abiObj = JSON.parse(abi);
+//   else
+//     abiObj = abi;
+//   var isERC20 = false;
+//   var isERC223 = false;
+//   var exist = false;
+//   var different = false;
+//   var transerNum = 0;
+//   for(var i=0; i<ERC223ABI.length; i++){
+//     var element = ERC223ABI[i];
+//     if(element.name=="transfer"){
+//       transerNum++;
+//     }
+//     exist = false;
+//     for(var j=0; j<abiObj.length; j++){
+//       abiObjEle = abiObj[j];
+//       if(abiObjEle.name == element.name){
+//         exist = true;
+//         break;
+//       }
+//     }
+//     if(!exist){
+//       different = true;
+//       break;
+//     }
+//   }
+//   if(!different && transerNum>1){
+//     isERC223 = true;
+//   }
+
+//   if(!isERC223){
+//     different = false;
+//     for(var i=0; i<SMART_ERCABI.length; i++){
+//       ERC20Ele = SMART_ERCABI[i];
+//       exist = false;
+//       for(var j=0; j<abiObj.length; j++){
+//         abiObjEle =abiObj[j];
+//         if(ERC20Ele.name==abiObjEle.name){
+//           exist = true;
+//           break;
+//         }
+//       }
+//       if(!exist){
+//         different = true;
+//         break;
+//       }
+//     }
+//     if(!different){
+//       isERC20 = true;
+//     }
+//   }
+
+//   if(isERC223)
+//     return 3;
+//   else if(isERC20)
+//     return 2;
+
+//   return 0;
+// }
+
+// var testValidCode = async function(output, data, bytecode, response) {
+//   var verifiedContracts = [];
+//   var targetContractName = data.contractName;
+//   var allContractObj = output.contracts['xxx.sol'];
+
+//   if(!allContractObj){
+//     data.valid = false;
+//     data["verifiedContracts"] = verifiedContracts;
+//     response.write(JSON.stringify(data));
+//     response.end();
+//     return;
+//   }
+
+//   var targetContract = allContractObj[targetContractName]
+//   var concatByteCode = targetContract.evm.bytecode.object;
+//   for (var contractName in allContractObj) {
+//     verifiedContracts.push({"name": contractName,
+//                             "abi": JSON.stringify(allContractObj[contractName].abi),
+//                             "bytecode": allContractObj[contractName].evm.bytecode.object});
+//   }
+
+//   var testCode = bytecode.substring(10,);
+//   var endIndex = testCode.length;
+//   if(testCode.indexOf("7a7a72305820")>-1)
+//     endIndex = testCode.indexOf("7a7a72305820");
+//   else if(testCode.length>68){
+//     endIndex = 68
+//   }
+//   if(endIndex==-1)
+//     endIndex = testCode.length;
+//   testCode = testCode.substring(0,endIndex);
+//   //console.log("bytecode on blockchain:");
+//   //console.log(testCode);
+//   if (!targetContract){
+//     data.valid = false;
+//     data["verifiedContracts"] = verifiedContracts;
+//     response.write(JSON.stringify(data));
+//     response.end();
+//     return;
+//   }else if(concatByteCode.indexOf(testCode) > -1){
+//     console.log("testval.2....")
+//     data.valid = true;
+//     data.abi = JSON.stringify(targetContract.abi);
+//     data.byteCode = bytecode;
+//     data["verifiedContracts"] = verifiedContracts;
+//     //write to db
+//     var  ERCType = checkERC(data.abi);
+//     data.ERC = ERCType;
+//     await config.db.Contract.update(
+//       {address: data.address},
+//       {$set:{'ERC':data.ERC, 'compilerVersion':data.compilerVersion, 'optimization':data.optimization, 'contractName':data.contractName, 'sourceCode':data.sourceCode, 'abi':data.abi}},
+//       {multi: false, upsert: false}
+//     );
+//     let contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
     
-    return res.send({"resp":{"status":true,"contract":contract}})
+//     return res.send({"resp":{"status":true,"contract":contract}})
 
 
-  }else{
-    data.valid = false;
-    data["verifiedContracts"] = verifiedContracts;
-    response.write(JSON.stringify(data));
-    response.end();
-    return;
-  }
-}
+//   }else{
+//     data.valid = false;
+//     data["verifiedContracts"] = verifiedContracts;
+//     response.write(JSON.stringify(data));
+//     response.end();
+//     return;
+//   }
+// }

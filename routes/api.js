@@ -9,6 +9,7 @@ var version = require('../api/version')
 var contract = require('../api/contract')
 var log = require('../api/logevent')
 var inner = require('../api/inertransaction')
+var compiler = require('./compiler');
 
 
 router.use(function (req, res, next) {
@@ -61,4 +62,5 @@ router.post('/contract/addToken',contract.addToken);
 
 router.post('/inner/innerTxOneByHash',inner.innerTxOneByHash);
 router.post('/inner/innerTxListByAddress',inner.innerTxListByAddress);
+
 module.exports = router;

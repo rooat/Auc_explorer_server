@@ -1,9 +1,8 @@
 var solc = require('solc');
-
+var config = require("../config")
 // var eth = require('./web3dummy').eth;
-var eth = require('./web3relay').eth;
+var eth = config.web3.eth;
 
-var contracts = require('./contracts');
 var mongoose = require( 'mongoose' );
 var Contract = mongoose.model( 'Contract' );
 var Transaction = mongoose.model( 'Transaction' );
@@ -30,23 +29,8 @@ var inputJson = {
   }
 }
 
-module.exports = function(req, res) {
-  // console.log(req.body);
-  if (!("action" in req.body)){
-    res.status(400).send();
-    res.end();
-  }
 
-  if (req.body.action=="compile") {
-    compileSolc(req, res);
-  } else if (req.body.action=="find") {
-    contracts.findContract(req.body.addr, res);
-  }
-
-}
-
-
-var compileSolc = function(req, res) {
+exports.compileSolc = function(req, res) {
 
   // get bytecode at address
   var address = req.body.address;
@@ -56,7 +40,7 @@ var compileSolc = function(req, res) {
   var optimization = (req.body.optimization) ? true : false;
   var optimise = (optimization) ? 1 : 0;
 
-  var bytecode = eth.getCode(address);
+  var bytecode = String(eth.getCode(address));
   if (bytecode.substring(0,2)=="0x")
     bytecode = bytecode.substring(2);
 
