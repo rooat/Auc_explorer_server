@@ -2,6 +2,7 @@
 var config = require('../config')
 var versions = require('../solcversion.json');
 var wrapper = require('solc/wrapper.js')
+var sol = require("../soljson-v0.5.4+commit.9549d8ff.js")
 var solc = require('solc');
 
 const ERC223ABI = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"_name","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"_totalSupply","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"_decimals","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"MAX_UINT256","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"_symbol","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"},{"name":"_data","type":"bytes"},{"name":"_custom_fallback","type":"string"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":true,"name":"data","type":"bytes"}],"name":"Transfer","type":"event"}];
@@ -230,7 +231,6 @@ exports.compileContract = async function(req, res){
     let input = req.body.code;
     let optimization = (req.body.optimization ==1) ? true:false;
     let abi = req.body.abi;
-  
     try {
       if(config.util.invalidAddr(address) && version && name && input && optimization && abi ){
         let contrx = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
@@ -251,11 +251,11 @@ exports.compileContract = async function(req, res){
         if(!wantVersion){
           return res.send({"resp":"version invalid"})
         }
-        console.log("wanteVersion:",wantVersion);
-        let vers = require('../solcbin/'+wantVersion);
-        // let vers = require('../'+wantVersion);
+        // console.log("wanteVersion:",wantVersion);
+        // let vers = require('../solcbin/'+wantVersion);
+        let vers = require('../'+wantVersion);
         let newSolc = wrapper(vers);
-        // console.log("input::",)
+        // console.log("input::",input)
         let inputJson = {
           language: 'Solidity',
           settings: {
@@ -265,7 +265,7 @@ exports.compileContract = async function(req, res){
             },
             outputSelection: {
                   '*': {
-                      '*': ['abi', 'evm.bytecode']
+                      '*': ["*"]
                   }
               }
           },
@@ -275,9 +275,12 @@ exports.compileContract = async function(req, res){
             }
           }
         }
+        // console.log(inputJson)
+        // console.log(newSolc.compile(JSON.stringify(inputJson)))
         let output = JSON.parse(newSolc.compile(JSON.stringify(inputJson)))
-        console.log("output-",output);
-        let compileByteCode = output.contracts['xxx.sol'][name].evm.bytecode.object;
+        let abi = output.contracts['xxx.sol'][name].abi;
+        let contracts = output.contracts['xxx.sol'][name]
+        let compileByteCode = contracts.evm.bytecode.object;
         let bytecode = await config.utilWeb3.web3Methods("getCode",{"address":address})
         bytecode = bytecode.substr(2)
         var testCode = bytecode.substring(10);
@@ -307,7 +310,7 @@ exports.compileContract = async function(req, res){
             console.log("false")
             return res.send({"resp":{"status":false,"contract":null}})
         }
-        // return res.send({"resp":"ddddd"})
+        return res.send({"resp":"ddddd"})
       }
       return res.send({"resp":"params invalid"})
     } catch (error) {
