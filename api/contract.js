@@ -457,8 +457,8 @@ exports.compileContract = async function(req, response){
             data.valid = false;
             data.err = err.toString();
             data["verifiedContracts"] = [];
-            res.write(JSON.stringify(data));
-            res.end();
+            response.write(JSON.stringify(data));
+            response.end();
             return;
           }
           else {
@@ -551,7 +551,7 @@ var checkERC = function(abi){
   return 0;
 }
 
-var testValidCode = function(output, data, bytecode, response) {
+var testValidCode = async function(output, data, bytecode, response) {
   var verifiedContracts = [];
   var targetContractName = data.contractName;
   var allContractObj = output.contracts['xxx.sol'];
@@ -595,21 +595,18 @@ var testValidCode = function(output, data, bytecode, response) {
     data.abi = JSON.stringify(targetContract.abi);
     data.byteCode = bytecode;
     data["verifiedContracts"] = verifiedContracts;
-    response.write(JSON.stringify(data));
-    response.end();
     //write to db
     var  ERCType = checkERC(data.abi);
     data.ERC = ERCType;
-
-    Contract.update(
+    await config.db.Contract.update(
       {address: data.address},
       {$set:{'ERC':data.ERC, 'compilerVersion':data.compilerVersion, 'optimization':data.optimization, 'contractName':data.contractName, 'sourceCode':data.sourceCode, 'abi':data.abi}},
-      {multi: false, upsert: false},
-      function (err, data) {
-        if(err)
-          console.log(err);
-      }
+      {multi: false, upsert: false}
     );
+    let contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
+    
+    return res.send({"resp":{"status":true,"contract":contract}})
+
 
   }else{
     data.valid = false;
