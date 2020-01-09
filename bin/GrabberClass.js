@@ -319,8 +319,10 @@ var writeTransactionsToDB = async function(blockData) {
                     });
                 }
             }
-            
-            if(!(txData.input =="0x" && txData.to == "0x1111111111111111111111111111111111111111" && txData.value == 0)){
+            if((txData.input =="0x" && txData.to == "0x1111111111111111111111111111111111111111" && parseInt(txData.value) == 0)){
+                console.log("continue....----");
+                continue;
+            }else{
                 if(Number(txData.value)>0){
                     if(txData.from)
                         addrs.push(txData.from, "-"+txData.value);
