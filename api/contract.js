@@ -259,7 +259,7 @@ exports.compileContract = async function(req, res){
           return res.send({"resp":"address invalid contract"});
         }
         if(contrx && contrx.sourceCode){
-          return res.send({"resp":{"status":true,"contract":contrx}});
+          return res.send({"resp":true});
         }
         let versionList = versions.releases;
         let wantVersion ; 
