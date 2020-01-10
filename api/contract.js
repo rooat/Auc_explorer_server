@@ -251,7 +251,7 @@ exports.compileContract = async function(req, res){
     let name = req.body.name;
     let input = req.body.code;
     let optimization = (req.body.optimization ==1) ? true:false;
-    // let abi = req.body.abi;
+    let abi = req.body.abi;
     try {
       if(config.util.invalidAddr(address) && version && name && input && optimization && abi ){
         let contrx = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
@@ -299,7 +299,7 @@ exports.compileContract = async function(req, res){
         // console.log(inputJson)
         // console.log(newSolc.compile(JSON.stringify(inputJson)))
         let output = JSON.parse(newSolc.compile(JSON.stringify(inputJson)))
-        let abi = output.contracts['xxx.sol'][name].abi;
+        // let abi = output.contracts['xxx.sol'][name].abi;
         let contracts = output.contracts['xxx.sol'][name]
         let compileByteCode = contracts.evm.bytecode.object;
         let bytecode = await config.utilWeb3.web3Methods("getCode",{"address":address})
