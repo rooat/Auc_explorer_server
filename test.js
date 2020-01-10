@@ -730,7 +730,7 @@ let ABI = [
 ];
 async function test(){
    let dd = await axios.post("http://47.56.226.139/api/contract/compileContract",{
-      "address":"0xC65565482502ea4C16E571367eE62C32cDf1a981",
+      "address":"0x0E63Bdb5cAA7D616e4355F45672a24E1C5B61D4c",
       "code":sss,
       "name":"LSB",
       "abi":JSON.stringify(ABI),

@@ -4,49 +4,49 @@ var Schema   = mongoose.Schema;
 var Block = new Schema(
 {
     "number": {type: Number, index: {unique: true}},
-    "hash": String,
-    "parentHash": String,
-    "nonce": String,
-    "sha3Uncles": String,
-    "logsBloom": String,
-    "transactionsRoot": String,
-    "stateRoot": String,
-    "receiptsRoot": String,
-    "miner": String,
-    "difficulty": String,
-    "totalDifficulty": String,
-    "size": Number,
-    "extraData": String,
-    "gasLimit": Number,
-    "gasUsed": Number,
+    "hash": {type:String,default:null},
+    "parentHash": {type:String,default:null},
+    "nonce": {type:String,default:null},
+    "sha3Uncles": {type:String,default:null},
+    "logsBloom": {type:String,default:null},
+    "transactionsRoot": {type:String,default:null},
+    "stateRoot": {type:String,default:null},
+    "receiptsRoot": {type:String,default:null},
+    "miner": {type:String,default:null},
+    "difficulty": {type:String,default:null},
+    "totalDifficulty": {type:String,default:null},
+    "size":{type:Number,default:0},
+    "extraData":{type:String,default:null},
+    "gasLimit":{type:Number,default:0},
+    "gasUsed":{type:Number,default:0},
     "timestamp": {type: Number, index: true},
     "uncles": [String],
     "txs": [String],//same with transactions
     "witness": {type: String, index: true},
-    "referrer":String
+    "referrer":{type:String,default:null}
 
 });
 var SolidityVersion = new Schema({
-    "path":String,
-    "version":String,
-    "build": String,
-    "longVersion": String,
-    "keccak256": String,
+    "path":{type:String,default:null},
+    "version":{type:String,default:null},
+    "build":{type:String,default:null},
+    "longVersion":{type:String,default:null},
+    "keccak256":{type:String,default:null},
     "urls": [String]
 })
 
 //master node Info
 var Witness = new Schema(
     {
-        "blocksNum": Number,//mine block count
-        "lastCountTo": Number,//block height
+        "blocksNum":{type:Number,default:0},//mine block count
+        "lastCountTo":{type:Number,default:0},//block height
         "witness": {type: String, index: {unique: true}},
         "version": {type: String, index: true},
         "status":Boolean,
         "hash":String,
         "reward":Number,
         "miner":String,
-        "timestamp": Number,
+        "timestamp":{type:Number,default:0},
         "referrer":String
 
     });
@@ -59,46 +59,46 @@ var TokenAdd = new Schema({
 var Contract = new Schema(
 {
     "address": {type: String, index: {unique: true}},
-    "blockNumber": Number,
+    "blockNumber":{type:Number,default:0},
     "ERC":{type: Number, index: true},//0:normal contract 2:ERC20, 3:ERC223
-    "creationTransaction": String,
-    "contractName": String,
-    "tokenName": String,
-    "symbol": String,
-    "owner": String,
-    "decimals": Number,
-    "totalSupply": Number,
-    "balance": Number,
-    "compilerVersion": String,
+    "creationTransaction": {type:String,default:null},
+    "contractName": {type:String,default:null},
+    "tokenName": {type:String,default:null},
+    "symbol": {type:String,default:null},
+    "owner": {type:String,default:null},
+    "decimals":{type:Number,default:0},
+    "totalSupply":{type:Number,default:0},
+    "balance":{type:Number,default:0},
+    "compilerVersion": {type:String,default:null},
     "optimization": Boolean,
     "runs":{type:Number,default:200},
-    "description": String,
-    "logoUrl": String,
-    "timestamp": Number,
+    "description": {type:String,default:null},
+    "logoUrl": {type:String,default:null},
+    "timestamp":{type:Number,default:0},
 
-    "sourceCode": String,
-    "abi": String,
-    "byteCode": String
+    "sourceCode": {type:String,default:null},
+    "abi": {type:String,default:null},
+    "byteCode": {type:String,default:null}
 }, {collection: "Contract"});
 
 var Transaction = new Schema(
 {
     "hash": {type: String, index: {unique: true}},
-    "nonce": Number,
-    "blockHash": String,
+    "nonce":{type:Number,default:0},
+    "blockHash":{type:String,default:null},
     "blockNumber": {type: Number, index: true},
-    "transactionIndex": Number,
+    "transactionIndex":{type:Number,default:0},
     "status":Number,
     "from": {type: String, index: true},
     "to": {type: String, index: true},
-    "value": String,
-    "gas": Number,
+    "value": {type:String,default:null},
+    "gas":{type:Number,default:0},
     "contractAddress":String,
     "gasUsed":Number,
-    "gasPrice": String,
+    "gasPrice": {type:String,default:null},
     "timestamp": {type: Number, index: true},
-    "input": String,
-    "witness": String
+    "input": {type:String,default:null},
+    "witness": {type:String,default:null}
 });
 
 var InerTransaction = new Schema(
@@ -106,20 +106,20 @@ var InerTransaction = new Schema(
         "hash": {type: String},
         "from": {type: String, index: true},
         "to": {type: String, index: true},
-        "value": String,
-        "timestamp": Number,
+        "value":{type:String,default:null},
+        "timestamp":{type:Number,default:0},
         "blockNumber": {type: Number}
     });
 
 var TokenTransfer = new Schema(
     {
         "transactionHash": {type: String, index: {unique: true}},
-        "blockNumber": Number,
-        "methodName": String,
-        "amount": Number,
-        "contractAdd": String,
-        "to": String,
-        "from": String,
+        "blockNumber":{type:Number,default:0},
+        "methodName":{type:String,default:null},
+        "amount":{type:Number,default:0},
+        "contractAdd":{type:String,default:null},
+        "to":{type:String,default:null},
+        "from":{type:String,default:null},
         "status":Number,
         "timestamp": Number
     });
@@ -131,15 +131,15 @@ var LogEvent = new Schema(
         "address": {type: String, index: true},
         "txHash": {type: String, index: true},
         "blockNumber": {type: Number, index: true},
-        "contractAdd": String,//same with address
-        "timestamp": Number,
-        "methodName": String,
-        "eventName": String,
-        "from": String,
-        "to": String,
-        "logIndex": Number,
+        "contractAdd":{type:String,default:null},//same with address
+        "timestamp":{type:Number,default:0},
+        "methodName":{type:String,default:null},
+        "eventName":{type:String,default:null},
+        "from":{type:String,default:null},
+        "to":{type:String,default:null},
+        "logIndex":{type:Number,default:0},
         "topics": Array,
-        "data": String,
+        "data":{type:String,default:null},
         "gasUsed":Number,
         "gasPrice": Number
     });
@@ -154,9 +154,9 @@ var Address = new Schema(
     });
 var WalletVersion = new Schema(
     {
-        "versionCode": String,
-        "version": String,
-        "url": String,
+        "versionCode":{type:String,default:null},
+        "version":{type:String,default:null},
+        "url":{type:String,default:null},
         "content":String,
         "createAt":Date
     });
