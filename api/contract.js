@@ -74,7 +74,8 @@ exports.tokenInfo = async function(req,res){
             "creator": dbToken.owner,
             "decimals": dbToken.decimals,
             "isVerified":dbToken.sourceCode!=null,
-            "address":contractAdd
+            "address":contractAdd,
+            "sourceCode":dbToken.sourceCode
           };
         return res.send({"resp":tokenData});
        }
