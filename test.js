@@ -737,6 +737,6 @@ async function test(){
       "optimization":1,
       "version":"0.5.4"
    })
-   console.log("ddd",dd)
+   console.log("ddd",dd.data.resp)
 }
 test()

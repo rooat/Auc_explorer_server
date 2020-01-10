@@ -322,11 +322,11 @@ exports.compileContract = async function(req, res){
               {address: address},
               {$set:{"ERC":erc,'compilerVersion':version, 'optimization':optimization, 'contractName':name, 'sourceCode':input,"abi":abi}},
               {multi: false, upsert: false});
-            let contract = {};
-            contract.isVerified = true;
-            contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
+            // let contract = {};
+            // contract.isVerified = true;
+            // contract = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
             
-            return res.send({"resp":{"status":true,"contract":contract}})
+            return res.send({"resp":true})
         }else{
             console.log("false")
             return res.send({"resp":{"status":false,"contract":null}})
