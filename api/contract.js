@@ -62,8 +62,20 @@ exports.tokenInfo = async function(req,res){
     if(config.util.invalidAddr(contractAdd)){
        let dbToken =  await config.db.Contract.findOne({"address":config.util.noLowUper(contractAdd)});
        if(dbToken){
-          let tokenData = {
-            "balance": dbToken.balance,
+          let tokenData ={};
+          let balance = await config.utilWeb3.web3Methods("getBalance",{"address":contractAdd});
+          tokenData.balance = balance;
+          if(dbToken.totalSupply > 0){
+            tokenData.totalSupply = dbToken.totalSupply/10**dbToken.decimals 
+          }
+          tokenData.name = dbToken.tokenName;
+          if(dbToken.ERC){
+            tokenData.ERC = dbToken.ERC;
+          }
+          if(dbToken.symbol){
+            tokenData.symbol = dbToken.symbol;
+          }
+          tokenData = {
             "totalSupply": dbToken.totalSupply/10**dbToken.decimals,//dbToken.totalSupply.toEther(actualBalance, 'wei');
             "tokenHolders": 2,//tt fix, wait to dev
             "name": dbToken.tokenName,
@@ -77,6 +89,8 @@ exports.tokenInfo = async function(req,res){
             "address":contractAdd,
             "sourceCode":dbToken.sourceCode
           };
+          
+          
         return res.send({"resp":tokenData});
        }
        return res.send({"resp":null})
