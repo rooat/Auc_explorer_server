@@ -66,7 +66,7 @@ exports.getBlockTxTps = async function(req,res){
             blockNum = lastBlock[0].number;
         }
         let currBlock = await config.utilWeb3.web3Methods();
-        result.meanDayRewards = (currBlock - blockNum)*config.reward;
+        result.meanDayRewards = (currBlock - blockNum);
         result.blocks = blockData;
         return res.send({"resp":result});
     }
