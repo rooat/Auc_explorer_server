@@ -75,6 +75,9 @@ exports.tokenInfo = async function(req,res){
           if(dbToken.symbol){
             tokenData.symbol = dbToken.symbol;
           }
+          if(dbToken.abi){
+            tokenData.abi = dbToken.abi;
+          }
           tokenData = {
             "totalSupply": dbToken.totalSupply/10**dbToken.decimals,//dbToken.totalSupply.toEther(actualBalance, 'wei');
             "tokenHolders": 2,//tt fix, wait to dev
