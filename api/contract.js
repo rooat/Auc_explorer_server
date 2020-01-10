@@ -65,7 +65,7 @@ exports.tokenInfo = async function(req,res){
           // let tokenData ={};
           let balance = await config.utilWeb3.web3Methods("getBalance",{"address":contractAdd});
           dbToken.balance = balance;
-          dbToken.isVerified = dbToken.sourceCode!=null; 
+          // dbToken.isVerified = dbToken.sourceCode!=null; 
           // tokenData.balance = balance;
           // if(dbToken.totalSupply > 0){
           //   tokenData.totalSupply = dbToken.totalSupply/10**dbToken.decimals 
