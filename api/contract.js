@@ -253,6 +253,12 @@ exports.compileContract = async function(req, res){
     let optimization = (req.body.optimization ==1) ? true:false;
     let abi = req.body.abi;
     try {
+      console.log('a:',address);
+      console.log('b:',version);
+      console.log('c:',name);
+      console.log('d:',input);
+      console.log('e:',optimization);
+      console.log('f:',abi);
       if(config.util.invalidAddr(address) && version && name && input && optimization && abi ){
         let contrx = await config.db.Contract.findOne({"address":config.util.noLowUper(address)});
         if(!contrx){
