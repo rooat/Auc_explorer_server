@@ -185,7 +185,7 @@ exports.tokenTransferByContract = async function(req,res){
     let page = req.body.page;
     let ps = config.util.returnPs(page,10);
     if(config.util.invalidAddr(contractAdd)){
-        let findOpt = {"contractAdd":contractAdd};
+        let findOpt = {"contractAdd":config.util.noLowUper(contractAdd)};
         if(startNum>=0 && endNum>0){
           findOpt = {
             "contractAdd":config.util.noLowUper(contractAdd),
