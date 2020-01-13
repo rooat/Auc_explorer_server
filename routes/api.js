@@ -41,6 +41,7 @@ router.post('/transaction/txByHash',transaction.txByHash);
 
 router.post('/version/versionCheck',version.versionCheck);
 router.post('/version/solcVersion',version.solcVersion);
+router.post('/version/updateVersion',version.updateVersion);
 
 router.post('/log/findLogOneByHash',log.findLogOneByHash);
 

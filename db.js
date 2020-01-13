@@ -158,7 +158,7 @@ var WalletVersion = new Schema(
         "version":{type:String,default:null},
         "url":{type:String,default:null},
         "content":String,
-        "createAt":Date
+        "createAt":{type:Date,default:Date.now}
     });
 mongoose.model('TokenAdd',TokenAdd);
 mongoose.model('WalletVersion',WalletVersion)

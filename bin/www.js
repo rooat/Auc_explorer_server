@@ -98,9 +98,18 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-// var axios = require('axios')
-// async function saveSolidityVersion(){
-//   let datas = await axios.get("https://ethereum.github.io/solc-bin/bin/list.json");
-//   console.log("datas:",datas.builds[0])
-// }
-// saveSolidityVersion()
+
+var config = require("../config");
+async function updateWalletVersion(){
+  let wallet = await config.db.WalletVersion.findOne();
+  if(!wallet){
+    await config.db.WalletVersion({
+      "versionCode":"7",
+      "version":"1.0",
+      "url":"http://47.244.161.199/AUChain.apk",
+      "content":"优化发现页面加载，解决使用中发现的问题. （ Optimizing when loading the startup pag）",
+      "createAt":new Date()
+    }).save();
+  }
+}
+updateWalletVersion()
