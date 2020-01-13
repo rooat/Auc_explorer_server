@@ -188,12 +188,12 @@ exports.tokenTransferByContract = async function(req,res){
         let findOpt = {"contractAdd":contractAdd};
         if(startNum>=0 && endNum>0){
           findOpt = {
-            "contractAdd":contractAdd,
+            "contractAdd":config.util.noLowUper(contractAdd),
             "amount":{$gte:startNum,$lte:endNum}
           }
         }else if(startNum ==null && endNum > 0){
             findOpt = {
-              "contractAdd":contractAdd,
+              "contractAdd":config.util.noLowUper(contractAdd),
               "amount":{$gte:endNum} 
             }
         }
