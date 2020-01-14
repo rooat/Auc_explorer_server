@@ -13,16 +13,22 @@ var soliCompCache = {};//solidity compiler cache。generating for compiler cost 
 exports.addToken = async function(req,res){
   try {
     let contract = req.body.address;
-    if(contract){
-      let conData = await config.db.Contract.findOne({"address":config.util.noLowUper(contract),"totalSupply":{$gt:0}});
-      if(!conData){
-        return res.send({"resp":"invalid deployed or invalid Token"})
+    let username  = req.body.username;
+    let password = req.body.password;
+
+    if(contract && username && password){
+      if(username == "auchainorg" && password =="dga@@#%%343434kjdg%"){
+        let conData = await config.db.Contract.findOne({"address":config.util.noLowUper(contract),"totalSupply":{$gt:0}});
+        if(!conData){
+          return res.send({"resp":"invalid deployed or invalid Token"})
+        }
+        await config.db.TokenAdd({
+          "address":contract,
+          "tokenName":conData.tokenName
+        }).save()
+        return res.send({"resp":"success"})
       }
-      await config.db.TokenAdd({
-        "address":contract,
-        "tokenName":conData.tokenName
-      }).save()
-      return res.send({"resp":"success"})
+      return res.send({"resp":"username or password invalid"})
     }
     return res.send({"resp":"invalid params"});
   } catch (error) {
@@ -633,3 +639,5 @@ var checkERC = function(abi){
 //     return;
 //   }
 // }
+
+

@@ -249,6 +249,7 @@ var writeTransactionsToDB = async function(blockData) {
                     var methodCode = txData.input.substr(0,10);
                     if(ERC20_METHOD_DIC[methodCode]=="transfer" || ERC20_METHOD_DIC[methodCode]=="transferFrom"){
                         if(ERC20_METHOD_DIC[methodCode]=="transfer"){//token transfer transaction
+                            console.log("input--:",txData.input);
                             transferData.from= txData.from;
                             transferData.to= "0x"+txData.input.substring(34,74);
                             transferData.amount= Number("0x"+txData.input.substring(74));
