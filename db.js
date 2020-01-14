@@ -116,6 +116,7 @@ var TokenTransfer = new Schema(
         "transactionHash": {type: String, index: {unique: true}},
         "blockNumber":{type:Number,default:0},
         "methodName":{type:String,default:null},
+        "tokenName":{type:String,default:null},
         "amount":{type:Number,default:0},
         "contractAdd":{type:String,default:null},
         "to":{type:String,default:null},
@@ -160,6 +161,14 @@ var WalletVersion = new Schema(
         "content":String,
         "createAt":{type:Date,default:Date.now}
     });
+var AddrToToken = new Schema(
+    {
+        "address":{type:String,default:null},
+        "tokenAddr":{type:String,default:null},
+        "tokenName":{type:String,default:null}
+    }
+)
+mongoose.model('AddrToToken',AddrToToken); 
 mongoose.model('TokenAdd',TokenAdd);
 mongoose.model('WalletVersion',WalletVersion)
 mongoose.model('LogEvent', LogEvent);
@@ -171,6 +180,8 @@ mongoose.model('Transaction', Transaction);
 mongoose.model('InerTransaction', InerTransaction);
 mongoose.model('Witness', Witness);
 mongoose.model('SolidityVersion',SolidityVersion);
+
+module.exports.AddrToToken = mongoose.model('AddrToToken');
 module.exports.TokenAdd = mongoose.model('TokenAdd');
 module.exports.SolidityVersion = mongoose.model('SolidityVersion');
 module.exports.Block = mongoose.model('Block');

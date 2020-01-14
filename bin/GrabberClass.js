@@ -245,7 +245,7 @@ var writeTransactionsToDB = async function(blockData) {
                         }
                     );
                 }else{//internal transaction  . write to doc of InternalTx
-                    var transferData = {"transactionHash": "", "blockNumber": 0, "amount": 0, "contractAdd":"", "to": "", "from": "", "timestamp":0};
+                    var transferData = {"transactionHash": "", "blockNumber": 0, "amount": 0, "contractAdd":"", "to": "", "from": "","tokenName":"ERC", "timestamp":0};
                     var methodCode = txData.input.substr(0,10);
                     if(ERC20_METHOD_DIC[methodCode]=="transfer" || ERC20_METHOD_DIC[methodCode]=="transferFrom"){
                         if(ERC20_METHOD_DIC[methodCode]=="transfer"){//token transfer transaction
@@ -263,6 +263,33 @@ var writeTransactionsToDB = async function(blockData) {
                         transferData.contractAdd= txData.to;
                         transferData.status = 2;
                         transferData.timestamp = blockData.timestamp;
+
+                        let tokenData = await configs.db.Contract.findOne({"address":configs.util.noLowUper(txData.to)});
+                        if(tokenData){
+                            transferData.tokenName = tokenData.tokenName
+                        }
+                        let AddrToTokenDatafrom = await configs.db.AddrToToken.findOne({
+                            "address":configs.util.noLowUper(transferData.from),
+                            "tokenAddr":configs.util.noLowUper(txData.to)})
+                        // console.log("AddrToTokenDatafrom:",AddrToTokenDatafrom)
+                        if(!AddrToTokenDatafrom){
+                            await configs.db.AddrToToken({
+                                "address":transferData.from,
+                                "tokenAddr":txData.to,
+                                "tokenName":transferData.tokenName
+                            }).save();
+                        }
+                        let AddrToTokenDatato = await configs.db.AddrToToken.findOne({
+                            "address":configs.util.noLowUper(transferData.to),
+                            "tokenAddr":configs.util.noLowUper(txData.to)})
+                        // console.log("AddrToTokenDatato:",AddrToTokenDatato)
+                        if(!AddrToTokenDatato){
+                            await configs.db.AddrToToken({
+                                "address":transferData.to,
+                                "tokenAddr":txData.to,
+                                "tokenName":transferData.tokenName
+                            }).save();
+                        }
                         //write transfer transaction into db
                         TokenTransfer.update(
                             {transactionHash: transferData.transactionHash},
