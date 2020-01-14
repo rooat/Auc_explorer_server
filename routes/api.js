@@ -60,6 +60,7 @@ router.post('/contract/compileContract',contract.compileContract);
 router.post('/contract/tokenTxByAddressByContract',contract.tokenTxByAddressByContract);
 router.post('/contract/tokenHistory',contract.tokenHistory);
 router.post('/contract/addToken',contract.addToken);
+router.post('/contract/tokenListByAddress',contract.tokenListByAddress);
 
 router.post('/inner/innerTxOneByHash',inner.innerTxOneByHash);
 router.post('/inner/innerTxListByAddress',inner.innerTxListByAddress);
