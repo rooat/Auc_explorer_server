@@ -69,10 +69,24 @@ exports.tokenListByAddress = async function(req,res){
     let page = req.body.page;
     let ps = config.util.returnPs(page,10)
     if(config.util.invalidAddr(address)){
+      let newArr = [];
       let datas = await config.db.AddrToToken.find({"address":config.util.noLowUper(address)}).sort({"createAt":-1}).skip(ps).limit(10);
-      let count = await config.db.AddrToToken.find({"address":config.util.noLowUper(address)}).count();
-      return res.send({"list":datas,"count":count});
+      if(datas && datas.length>0){
+        
+        for(var i=0;i<datas.length;i++){
+          let Token = new config.web3.eth.Contract(config.tokenABI,datas[i].tokenAddr);
+          if(Token){
+            let bal = await Token.methods.balanceOf(datas[i].address).call();
+            if(bal!=0){
+              datas[i].balance = bal;
+              newArr.push(datas[i]);
+            }
+          }
+        }
+      }
+      return res.send({"list":newArr,"count":newArr.length});
     }
+    return res.send({"resp":"params invalid"})
   } catch (error) {
     console.log("err:",error)
   }

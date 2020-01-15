@@ -166,7 +166,9 @@ var AddrToToken = new Schema(
         "address":{type:String,default:null},
         "tokenAddr":{type:String,default:null},
         "tokenName":{type:String,default:null},
-        "createAt":{type:Date,default:Date.now}
+        "createAt":{type:Date,default:Date.now},
+        "symbol":{type:String,default:null},
+        "decimals":{type:Number,default:1}
     }
 )
 mongoose.model('AddrToToken',AddrToToken); 
