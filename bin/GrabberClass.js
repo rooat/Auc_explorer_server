@@ -36,8 +36,8 @@ var grabBlocks =async function() {
         lastBlockNum = blockFind.number -1;
         // lastBlockNum = 4524
     }
-    let newBlockNumber = await configs.utilWeb3.web3Methods();
-    lastBlockNum = newBlockNumber - 10;
+    // let newBlockNumber = await configs.utilWeb3.web3Methods();
+    // lastBlockNum = newBlockNumber - 10;
     Block.collection.remove({'number':lastBlockNum+1});
     LogEvent.collection.remove({'blockNumber':lastBlockNum+1});
     Contract.collection.remove({'blockNumber':lastBlockNum+1});

@@ -77,9 +77,15 @@ exports.tokenListByAddress = async function(req,res){
           let Token = new config.web3.eth.Contract(config.tokenABI,datas[i].tokenAddr);
           if(Token){
             let bal = await Token.methods.balanceOf(datas[i].address).call();
-            if(bal!=0){
-              datas[i].balance = bal;
-              newArr.push(datas[i]);
+            if(bal > 0){
+              newArr.push({
+                "decimals": datas[i].decimals,
+                "symbol": datas[i].symbol,
+                "tokenName": datas[i].tokenName,
+                "tokenAddr": datas[i].tokenAddr,
+                "address": datas[i].address,
+                "balance":bal
+              });
             }
           }
         }
