@@ -266,12 +266,10 @@ var writeTransactionsToDB = async function(blockData) {
                         transferData.timestamp = blockData.timestamp;
 
                         let tokenData = await configs.db.Contract.findOne({"address":configs.util.noLowUper(txData.to)});
-                        let symbol ;
-                        let decimals;
                         if(tokenData){
                             transferData.tokenName = tokenData.tokenName;
-                            symbol = tokenData.symbol;
-                            decimals = tokenData.decimals;
+                            transferData.symbol = tokenData.symbol;
+                            transferData.decimals = tokenData.decimals;
 
                         }
                         let AddrToTokenDatafrom = await configs.db.AddrToToken.findOne({
@@ -283,8 +281,8 @@ var writeTransactionsToDB = async function(blockData) {
                                 "address":transferData.from,
                                 "tokenAddr":txData.to,
                                 "tokenName":transferData.tokenName,
-                                "symbol":symbol,
-                                "decimals":decimals
+                                "symbol":transferData.symbol,
+                                "decimals":transferData.decimals
                             }).save();
                         }
                         let AddrToTokenDatato = await configs.db.AddrToToken.findOne({
@@ -296,8 +294,8 @@ var writeTransactionsToDB = async function(blockData) {
                                 "address":transferData.to,
                                 "tokenAddr":txData.to,
                                 "tokenName":transferData.tokenName,
-                                "symbol":symbol,
-                                "decimals":decimals
+                                "symbol":transferData.symbol,
+                                "decimals":transferData.decimals
                             }).save();
                         }
                         //write transfer transaction into db
