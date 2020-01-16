@@ -201,6 +201,6 @@ module.exports.WalletVersion = mongoose.model('WalletVersion');
 
 // mongoose.connect( 'mongodb://localhost/blockDB' );
 // mongoose.connect('mongodb://etzscan:etz123@localhost:39462/blockDB', {useMongoClient:true});
-mongoose.connect('mongodb://localhost:27017/explorerDB', {useMongoClient:true});
+mongoose.connect('mongodb://localhost:27017/blockDB', {useMongoClient:true});
 mongoose.set('debug', false);
 
