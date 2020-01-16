@@ -36,15 +36,15 @@ var grabBlocks =async function() {
         lastBlockNum = blockFind.number -1;
         // lastBlockNum = 4524
     }
-    // let newBlockNumber = await configs.utilWeb3.web3Methods();
-    // lastBlockNum = newBlockNumber - 10;
+    let newBlockNumber = await configs.utilWeb3.web3Methods();
+    lastBlockNum = newBlockNumber - 10;
     Block.collection.remove({'number':lastBlockNum+1});
     LogEvent.collection.remove({'blockNumber':lastBlockNum+1});
     Contract.collection.remove({'blockNumber':lastBlockNum+1});
     TokenTransfer.collection.remove({'blockNumber':lastBlockNum+1});
     InerTransaction.collection.remove({'blockNumber':lastBlockNum+1});
 
-    await firstGraber(lastBlockNum); 
+    // await firstGraber(lastBlockNum); 
     console.log("begin graber....");
     setInterval( async ()=>{
         let newBlockNumber = await configs.utilWeb3.web3Methods();
