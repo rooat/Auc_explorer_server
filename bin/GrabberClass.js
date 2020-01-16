@@ -44,6 +44,8 @@ var grabBlocks =async function() {
     TokenTransfer.collection.remove({'blockNumber':lastBlockNum+1});
     InerTransaction.collection.remove({'blockNumber':lastBlockNum+1});
 
+    await firstGraber(lastBlockNum); 
+    console.log("begin graber....");
     setInterval( async ()=>{
         let newBlockNumber = await configs.utilWeb3.web3Methods();
         console.log("neBl:",newBlockNumber)
@@ -53,6 +55,17 @@ var grabBlocks =async function() {
         }
     },1000);
     
+}
+
+var firstGraber = async function(lastBlockNum){
+    let newBlockNumber = await configs.utilWeb3.web3Methods();
+    console.log("currentBlock:",newBlockNumber);
+    console.log("last:",lastBlockNum);
+    if(newBlockNumber - lastBlockNum > 40){
+        for(var i=lastBlockNum;i<newBlockNumber;i++){
+            await grabBlock(i);
+        }
+    }
 }
 
 var grabBlock = async function(desiredBlockHashOrNumber) {
