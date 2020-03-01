@@ -105,6 +105,8 @@ exports.getInfo = async function(req,res){
             reus.expiredNodes = result.expiredNodes;
             reus.myValidNodes = result.myValidNodes;
             reus.myExpiredNodes = result.myExpiredNodes;
+            reus.referrers1 = result.referrers1;
+            reus.referrers2 = result.referrers2;
             return res.send({"resp":reus})
         }
         return res.send({"resp":null})
