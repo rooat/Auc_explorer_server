@@ -49,7 +49,7 @@ exports.nodes = async function(req,res){
                 let idxx = ids.substr(2);
                 
                 let countBlock = await config.db.Block.find({"witness":idxx}).count();
-                reus.totalReward = countBlock * 4.75;
+                reus.totalReward = countBlock ;
                 reus.coinbase = result.coinbase;
                 reus.status = result.status;
                 let curBlockNumber = await config.utilWeb3.web3Methods();
@@ -156,11 +156,11 @@ exports.masterMesg = async function(req,res){
         }
         let currentBlockNumber = await config.utilWeb3.web3Methods();
         result.currentBlockNumber  = currentBlockNumber;
-        result.totalReward = currentBlockNumber * 4.75;
+        result.totalReward = currentBlockNumber ;
         result.period = 600;
         result.periodCount = 21;
         result.balance = balance;
-        result.dayReward = meanDayRewards * 4.75;
+        result.dayReward = meanDayRewards ;
         return res.send({"resp":result});
     } catch (error) {
        console.log("todataReward:",error) 
