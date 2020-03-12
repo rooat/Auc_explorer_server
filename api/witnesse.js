@@ -245,3 +245,8 @@ exports.witnessList=async function(req, res){
     result.WitnessFind = WitnessFind;
     return res.send({"resp":result});
 }
+
+exports.witnessNoBlock=async function(req, res){  
+    let WitnessFind = await config.db.Witness.find({"blocksNum":0});
+    return res.send({"resp":{"count":WitnessFind.length,"data":WitnessFind}});
+}

@@ -35,6 +35,7 @@ router.post('/witness/witnessList',witness.witnessList);
 router.post('/witness/weekRewardsById',witness.weekRewardsById)
 router.post('/witness/masterMesg',witness.masterMesg);
 router.get('/witness/getWitnesBlockNum',witness.getWitnesBlockNum)
+router.get('/witness/witnessNoBlock',witness.witnessNoBlock)
 
 router.post('/transaction/txlistByAddress',transaction.txlistByAddress);
 router.post('/transaction/txList',transaction.txList);
