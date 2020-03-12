@@ -1,5 +1,24 @@
 var config = require("../config")
 
+exports.getWitnesBlockNum = async (req,res)=>{
+    try {
+        let start = req.body.start;
+        let end = req.body.end;
+        let today_time = config.util.getTodayTime()
+        if(!start){
+            start = (today_time - 86400000)/1000
+        }
+        if(!end){
+            end = today_time/1000;
+        }
+        let datas = await db.blocks.aggregate( [{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+        return res.send({"resp":datas})
+    } catch (error) {
+        console.log("e:",error)
+    }
+    return res.send({"resp":null})
+}
+
 exports.getIds = async function(req,res){
     let address = req.body.address;
     let page = req.body.page;

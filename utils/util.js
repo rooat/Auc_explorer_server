@@ -26,9 +26,18 @@ function returnPs(page ,pageSize){
     return (page -1)*pageSize
 }
 
+function getTodayTime(){
+    let date = new Date();
+    let today = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+"0:0:0";
+    let today_time = new Date(today).getTime();
+    // console.log("today:",timestamp)
+    return today_time
+}
+
 module.exports ={
     noLowUper,
     invalidAddr,
     invalidHash,
-    returnPs
+    returnPs,
+    getTodayTime
 }
