@@ -11,7 +11,7 @@ exports.getWitnesBlockNum = async (req,res)=>{
         if(!end){
             end = today_time/1000;
         }
-        let datas = await config.db.blocks.aggregate( [{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+        let datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
         return res.send({"resp":datas})
     } catch (error) {
         console.log("e:",error)
