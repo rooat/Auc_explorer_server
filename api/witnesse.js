@@ -2,17 +2,38 @@ var config = require("../config")
 
 exports.getWitnesBlockNum = async (req,res)=>{
     try {
-        let start = req.query.start;
-        let end = req.query.end;
+        // let start = req.query.start;
+        // let end = req.query.end;
         let today_time = config.util.getTodayTime()
-        if(!start){
-            start = (today_time - 86400000)/1000
+        let aDay = 86400000
+        let map = new Map();
+        let set = new Set();
+        for(var i=0;i<7;i++){
+            let start = today_time-aDay*(i+1);
+            let end = today_time-aDay*i;
+            let datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+            if(datas && datas.length > 0){
+                for(var j=0;j<datas.length;j++){
+                    if(map.get(datas[j]._id)){
+                        let ars = map.get(datas[j]._id);
+                        ars.push(datas[j].num_tutorial);
+                    }else{
+                        let arr = [datas[j].num_tutorial];
+                        map.set(datas[j]._id,arr);
+                    }
+                    if(!set.has(datas[j]._id)){
+                        set.add(datas[j]._id)
+                    }
+                }
+            }
         }
-        if(!end){
-            end = today_time/1000;
-        }
-        let datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
-        return res.send({"resp":datas})
+        let list = [];
+        set.forEach((id)=>{
+            let arr = map.get(id)
+            list.push({"id":id,"data":arr})
+        })
+
+        return res.send({"resp":list})
     } catch (error) {
         console.log("e:",error)
     }
