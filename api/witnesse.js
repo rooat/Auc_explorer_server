@@ -18,13 +18,15 @@ exports.getWitnesBlockNum = async (req,res)=>{
             if(datas && datas.length > 0){
                 for(var j=0;j<datas.length;j++){
                     if(map.get(datas[j]._id)){
-                        let ars = map.get(datas[j]._id);
+                        let ars = JSON.parse(map.get(datas[j]._id));
+
                         ars[i] = datas[j].num_tutorial
-                        ars.push(ars);
+                        ars.push(JSON.stringify(ars));
                     }else{
                         let arr = Array.apply(null, Array(7)).map(() => 0);
                         arr[i] = datas[j].num_tutorial;
-                        map.set(datas[j]._id,arr);
+                        
+                        map.set(datas[j]._id,JSON.stringify(arr));
                     }
                     if(!set.has(datas[j]._id)){
                         set.add(datas[j]._id)
