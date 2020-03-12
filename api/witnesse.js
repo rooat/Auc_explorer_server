@@ -11,6 +11,8 @@ exports.getWitnesBlockNum = async (req,res)=>{
         for(var i=0;i<7;i++){
             let start = today_time-aDay*(i+1);
             let end = today_time-aDay*i;
+            console.log("start:",start)
+            console.log("end:",end)
             let datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
             console.log("datas:",datas)
             if(datas && datas.length > 0){
