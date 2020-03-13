@@ -19,7 +19,7 @@ exports.getWitnesBlockNum = async (req,res)=>{
             if(datas && datas.length > 0){
                 for(var j=0;j<datas.length;j++){
                     total += datas[j].num_tutorial
-                    if(map.get(datas[j]._id)){
+                    if(map.get(datas[j]._id) && map.get(datas[j]._id)!=undefined && map.get(datas[j]._id) !=null){
                         let ars = JSON.parse(map.get(datas[j]._id));
                         ars[i] = datas[j].num_tutorial
                         ars.push(JSON.stringify(ars));
