@@ -22,7 +22,7 @@ exports.getWitnesBlockNum = async (req,res)=>{
                     if(map.get(datas[j]._id) && map.get(datas[j]._id)!=undefined && map.get(datas[j]._id) !=null){
                         let ars = JSON.parse(map.get(datas[j]._id));
                         ars[i] = datas[j].num_tutorial
-                        ars.push(JSON.stringify(ars));
+                        map.set(datas[j]._id,JSON.stringify(ars));
                     }else{
                         let arr = Array.apply(null, Array(7)).map(() => 0);
                         arr[i] = datas[j].num_tutorial;
