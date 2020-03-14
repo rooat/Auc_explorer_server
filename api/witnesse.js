@@ -57,10 +57,7 @@ exports.getWitnesBlockNum = async (req,res)=>{
     return res.send({"resp":null})
 }
 
-function getListDatas(start,end){
-    let datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
-    return;
-}
+
 
 exports.getIds = async function(req,res){
     let address = req.body.address;
