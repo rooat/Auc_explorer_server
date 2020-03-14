@@ -38,9 +38,6 @@ exports.getWitnesBlockNum = async (req,res)=>{
             }
         }
 
-         db.blocks.aggregate([{ $match : { timestamp : { $gt : 1584028800, $lte : 1584115200 } ,witness:"ddeb5c7e8107c60f"} }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
-
-        console.log("total:",total)
         let list = [];
         // console.log("set:",set)
         set.forEach((id)=>{
