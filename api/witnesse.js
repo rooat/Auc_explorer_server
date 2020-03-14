@@ -16,7 +16,7 @@ exports.getWitnesBlockNum = async (req,res)=>{
             // console.log("end:",end)
             let datas = [];
             if(i==0){
-                datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : parseInt(new Date().getTime()/1000), $lte : today_time/1000 } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+                datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : today_time/1000, $lte : parseInt(new Date().getTime()/1000) } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
             }else{
                 datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
             }
