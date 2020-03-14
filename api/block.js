@@ -130,6 +130,9 @@ async function getCountByDay(witness,today_time,dayth){
         start = (today_time-aDay*(dayth+1))/1000;
         end = (today_time-aDay*dayth)/1000;
     }
+    console.log("witness:",witness)
+    console.log("start:",start)
+    console.log("end:",end)
     let data = await config.db.Block.find({"witness":witness,"timestamp":{$gt:start,$lte:end}})
     return data.length
 }
