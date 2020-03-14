@@ -20,7 +20,7 @@ exports.getWitnesBlockNum = async (req,res)=>{
             }else{
                 datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
             }
-            console.log("datas:",datas.length)
+            console.log("datas:"+i,datas.length)
             if(datas && datas.length > 0){
                 for(var j=0;j<datas.length;j++){
                     total += datas[j].num_tutorial
@@ -36,9 +36,9 @@ exports.getWitnesBlockNum = async (req,res)=>{
                     if(!set.has(datas[j]._id)){
                         set.add(datas[j]._id)
                     }
-                    if(datas[j]._id == "ddeb5c7e8107c60f"){
-                        console.log("count:",datas[j].num_tutorial)
-                    }
+                    // if(datas[j]._id == "ddeb5c7e8107c60f"){
+                    //     console.log("count:",datas[j].num_tutorial)
+                    // }
                 }
             }
         }
@@ -55,6 +55,11 @@ exports.getWitnesBlockNum = async (req,res)=>{
         console.log("e:",error)
     }
     return res.send({"resp":null})
+}
+
+function getListDatas(start,end){
+    let datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+    return;
 }
 
 exports.getIds = async function(req,res){
