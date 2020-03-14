@@ -36,9 +36,9 @@ exports.getWitnesBlockNum = async (req,res)=>{
                     if(!set.has(datas[j]._id)){
                         set.add(datas[j]._id)
                     }
-                    // if(datas[j]._id == "ddeb5c7e8107c60f"){
-                    //     console.log("count:",datas[j].num_tutorial)
-                    // }
+                    if(datas[j]._id == "ddeb5c7e8107c60f"){
+                        console.log("count----:",datas[j].num_tutorial)
+                    }
                 }
             }
         }
