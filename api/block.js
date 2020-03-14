@@ -76,35 +76,55 @@ exports.getBlockCharDataByWitness = async function(req,res){
     try {
         let witness = req.body.witness;
         if(witness){
-            let aday = 60*60*24;
-            let curDate = parseInt(new Date().getTime()/1000) ;
-            let curD = curDate - aday*7;
-            let list = await config.db.Block.find({"witness":witness,"timestamp":{$gte:curD}}).sort({"timestamp":-1}).limit(25000);
-            if(list && list.length>0){
-                let firstDay = list.filter((block)=>block.timestamp >= (curDate-aday));
-                let secDay = list.filter((block)=>block.timestamp >= (curDate-aday*2) && block.timestamp <= (curDate-aday));
-                let thirDay = list.filter((block)=>block.timestamp >= (curDate-aday*3) && block.timestamp <= (curDate-aday*2));
-                let forthDay = list.filter((block)=>block.timestamp >= (curDate-aday*4) && block.timestamp <= (curDate-aday*3));
-                let fifDay = list.filter((block)=>block.timestamp >= (curDate-aday*5) && block.timestamp <= (curDate-aday*4));
-                let sixDay = list.filter((block)=>block.timestamp >= (curDate-aday*6) && block.timestamp <= (curDate-aday*5)); 
-                let sevenDay = list.filter((block)=>block.timestamp >= (curDate-aday*7) && block.timestamp <= (curDate-aday*6));
+            let today_time = config.util.getTodayTime()
+            // let aDay = 86400000
+            // let start = (today_time-aDay)/1000;
+            // let end = today_time/1000;
+            // let firstDay = await config.db.Block.find({"witness":witness,"timestamp":{$gt:start,$lte:end}})
+
+            // let aday = 60*60*24;
+            // let curDate = parseInt(new Date().getTime()/1000) ;
+            // let curD = curDate - aday*7;
+            // let list = await config.db.Block.find({"witness":witness,"timestamp":{$gte:curD}}).sort({"timestamp":-1}).limit(25000);
+            // if(list && list.length>0){
+            //     let firstDay = list.filter((block)=>block.timestamp >= (curDate-aday));
+            //     let secDay = list.filter((block)=>block.timestamp >= (curDate-aday*2) && block.timestamp <= (curDate-aday));
+            //     let thirDay = list.filter((block)=>block.timestamp >= (curDate-aday*3) && block.timestamp <= (curDate-aday*2));
+            //     let forthDay = list.filter((block)=>block.timestamp >= (curDate-aday*4) && block.timestamp <= (curDate-aday*3));
+            //     let fifDay = list.filter((block)=>block.timestamp >= (curDate-aday*5) && block.timestamp <= (curDate-aday*4));
+            //     let sixDay = list.filter((block)=>block.timestamp >= (curDate-aday*6) && block.timestamp <= (curDate-aday*5)); 
+            //     let sevenDay = list.filter((block)=>block.timestamp >= (curDate-aday*7) && block.timestamp <= (curDate-aday*6));
                 
-                let result = [];
-                result.push(firstDay.length);
-                result.push(secDay.length);
-                result.push(thirDay.length);
-                result.push(forthDay.length);
-                result.push(fifDay.length);
-                result.push(sixDay.length);
-                result.push(sevenDay.length);
-                return res.send({"resp":result})
+            //     let result = [];
+            //     result.push(firstDay.length);
+            //     result.push(secDay.length);
+            //     result.push(thirDay.length);
+            //     result.push(forthDay.length);
+            //     result.push(fifDay.length);
+            //     result.push(sixDay.length);
+            //     result.push(sevenDay.length);
+            //     return res.send({"resp":result})
+            // }
+            let result = [];
+            for(var i=0;i<7;i++){
+                let len = await getCountByDay(witness,today_time,i);
+                result.push(len);
             }
+            return res.send({"resp":result})
         }
         return res.send({"resp":"params invalid"});
     } catch (error) {
         console.log("getBlockByWitness:",error);   
     }
     return res.send({"resp":null})
+}
+
+async function getCountByDay(witness,today_time,dayth){
+    let aDay = 86400000
+    let start = (today_time-aDay*(dayth+1))/1000;
+    let end = (today_time-aDay*dayth)/1000;
+    let data = await config.db.Block.find({"witness":witness,"timestamp":{$gt:start,$lte:end}})
+    return data.length
 }
 
 exports.getBlockListByWitness = async function(req,res){
