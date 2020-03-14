@@ -10,10 +10,8 @@ exports.getWitnesBlockNum = async (req,res)=>{
         let set = new Set();
         let total = 0;
         for(var i=0;i<7;i++){ 
-            let start = (today_time-aDay*(i+1))/1000;
-            let end = (today_time-aDay*i)/1000;
-            // console.log("start:"+start,"end:"+end)
-            // console.log("end:",end)
+            let start = (today_time-aDay*i)/1000;
+            let end = (today_time-aDay*(i-1))/1000;
             let datas = [];
             if(i==0){
                 datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : today_time/1000, $lte : parseInt(new Date().getTime()/1000) } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
@@ -36,12 +34,12 @@ exports.getWitnesBlockNum = async (req,res)=>{
                     if(!set.has(datas[j]._id)){
                         set.add(datas[j]._id)
                     }
-                    if(datas[j]._id == "ddeb5c7e8107c60f"){
-                        console.log("count----:",datas[j].num_tutorial)
-                    }
                 }
             }
         }
+
+         db.blocks.aggregate([{ $match : { timestamp : { $gt : 1584028800, $lte : 1584115200 } ,witness:"ddeb5c7e8107c60f"} }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+
         console.log("total:",total)
         let list = [];
         // console.log("set:",set)
