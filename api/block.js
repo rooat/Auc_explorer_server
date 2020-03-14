@@ -106,7 +106,7 @@ exports.getBlockCharDataByWitness = async function(req,res){
             //     return res.send({"resp":result})
             // }
             let result = [];
-            for(var i=0;i<7;i++){
+            for(var i=-1;i<6;i++){
                 let len = await getCountByDay(witness,today_time,i);
                 result.push(len);
             }
@@ -121,6 +121,15 @@ exports.getBlockCharDataByWitness = async function(req,res){
 
 async function getCountByDay(witness,today_time,dayth){
     let aDay = 86400000
+    let start =0;
+    let end = 0;
+    if(dayth == -1){
+        start = today_time;
+        end = parseInt(new Date().getTime()/1000)
+    }else{
+        start = (today_time-aDay*(dayth+1))/1000;
+        end = (today_time-aDay*dayth)/1000;
+    }
     let start = (today_time-aDay*(dayth+1))/1000;
     let end = (today_time-aDay*dayth)/1000;
     let data = await config.db.Block.find({"witness":witness,"timestamp":{$gt:start,$lte:end}})

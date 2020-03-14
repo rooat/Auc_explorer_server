@@ -9,12 +9,17 @@ exports.getWitnesBlockNum = async (req,res)=>{
         let map = new Map();
         let set = new Set();
         let total = 0;
-        for(var i=0;i<7;i++){
+        for(var i=0;i<7;i++){ 
             let start = (today_time-aDay*(i+1))/1000;
             let end = (today_time-aDay*i)/1000;
             // console.log("start:"+start,"end:"+end)
             // console.log("end:",end)
-            let datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+            let datas = [];
+            if(i==0){
+                datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : parseInt(new Date().getTime()/1000), $lte : today_time/1000 } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+            }else{
+                datas = await config.db.Block.aggregate([{ $match : { timestamp : { $gt : start, $lte : end } } }, {$group : {_id : "$witness", num_tutorial : {$sum : 1}}}] );
+            }
             console.log("datas:",datas.length)
             if(datas && datas.length > 0){
                 for(var j=0;j<datas.length;j++){
