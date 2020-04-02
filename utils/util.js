@@ -23,6 +23,9 @@ function returnPs(page ,pageSize){
     if(!page || page<=0 || isNaN(page)){
         page = 1;
     }
+    if(!pageSize || pageSize <=0 || isNaN(pageSize)){
+        pageSize = 10;
+    }
     return (page -1)*pageSize
 }
 

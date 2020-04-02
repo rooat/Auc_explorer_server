@@ -75,8 +75,12 @@ exports.getIds = async function(req,res){
 exports.getRefIds = async function(req,res){
     let address = req.body.address;
     let page = req.body.page;
+    let pageSize = req.body.pageSize;
+    if(!pageSize){
+        pageSize = 5;
+    }
     try {
-        let ps = config.util.returnPs(page,5);
+        let ps = config.util.returnPs(page,pageSize);
         if(config.util.invalidAddr(address)){
             let result = await config.master.methods.getRefIds(address,ps).call();
             if(result){
@@ -246,10 +250,11 @@ exports.weekRewardsById = async function(req,res){
 
 exports.witnessList=async function(req, res){  
     let page = req.body.page;
-    let ps = config.util.returnPs(page,10);
+    let pageSize = req.body.pageSize;
+    let ps = config.util.returnPs(page,pageSize);
     let count = await config.db.Witness.find().count();
 
-    let WitnessFind = await config.db.Witness.find({}).sort({"lastCountTo":-1}).skip(ps).limit(10);
+    let WitnessFind = await config.db.Witness.find({}).sort({"lastCountTo":-1}).skip(ps).limit(pageSize);
     let result = {}
     result.count = count;
     result.WitnessFind = WitnessFind;
